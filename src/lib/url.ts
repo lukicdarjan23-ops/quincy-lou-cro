@@ -77,9 +77,8 @@ export function normalizeUrl(input: string): string {
     }
   }
 
-  let normalized = parsed.toString();
-  if (parsed.pathname !== "/" && normalized.endsWith("/") && !parsed.search) {
-    normalized = normalized.slice(0, -1);
-  }
-  return normalized;
+  // The path is left exactly as given. Trimming a trailing slash looks tidy
+  // but changes what some servers return: pypi.org, for one, answers the
+  // slashless path with a 3 KB "could not load" page instead of the article.
+  return parsed.toString();
 }
