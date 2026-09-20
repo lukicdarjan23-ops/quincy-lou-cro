@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Stretch goal only: makes a report printable without extra work. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .print-break-inside-avoid {
+    break-inside: avoid;
+  }
+}
