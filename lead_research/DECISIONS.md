@@ -34,3 +34,18 @@ Choices made during the run without asking, with the reason for each.
 12. **Personal vs generic.** Addresses like hello@, info@, contact@, team@, studio@ count as generic. A first-name address like jane@ counts as personal when the name matches the contact.
 13. **Email copy.** There's no colon and no em dash anywhere in the subject or body (the code strips them as a safety net). The copy is short and plain. Each email opens with one specific line about the agency, and its source is in `research_note`. The pitch paragraph and close rotate between three variants per domain so the emails don't all read the same.
 14. **Batches.** The research ran in batches of about 10 agencies. `python -m leadtool add batch.json` saves after every agency and prints the progress line (including Icypeas credits) every 10.
+
+## Evidence rules added during the run
+
+15. **Data brokers don't count.** ZoomInfo, RocketReach, ContactOut, LeadIQ and similar sites show masked addresses like `d***@` and "most common format" guesses. When a personal address only came from those, I treated it as a guess. It went into `guessed_unverified`, never `email`.
+16. **Search queries never contained the address I was checking.** Search summaries tend to repeat whatever address the query includes, so an address counted only when it came back from a query that didn't have it (for example `site:domain.com contact email`, or `"@domain.com"`).
+17. **Names with first name only.** Some agencies publish only a first name (Chris at Big Creative, Max at My Little Big Web, Adam at Emerge). I kept them because the greeting only uses the first name. No surname was guessed.
+18. **Duplicate brands are one agency.** Lazarus Charlotte, Lazarus Charleston and Lazarus Design Team are one company, so there's one row.
+19. **Competitors skipped.** Agencies that sell white-label web design to other agencies (for example Dallas Web Agency) are skipped as competitors.
+
+## Why the run stopped at 84 qualified agencies, not 200
+
+20. The environment caps web search at **200 searches per session**, and that cap was reached. Direct site access and Icypeas were blocked too, so no research channel was left. Rather than pad the list with unverified agencies, I stopped and saved state:
+    - `leads.csv` holds 84 qualified plus 10 skipped agencies. `python -m leadtool known` lists the domains already covered.
+    - `candidates_backlog.csv` lists about 55 agencies found in discovery searches but not yet researched. The next run starts there.
+    - **To continue**, start a new session (or raise `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` in the environment settings) and ask to resume. Dedupe by domain means nothing gets researched twice. With Icypeas and direct site access allowed, the needs_check rows can also be upgraded (the crawler finds mailto links, and Icypeas verifies the guesses).
