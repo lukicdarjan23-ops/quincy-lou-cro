@@ -1084,5 +1084,79 @@
   "city": "Lubbock, TX",
   "skip": "solo operator ('One person. Every service.')",
   "research_note": "https://lubbockdesign.net/about"
+ },
+ {
+  "agency_name": "Clemson Web Design",
+  "website": "https://www.clemsonwebdesign.com",
+  "country": "USA",
+  "city": "Greenville / Clemson, SC",
+  "skip": "solo operator (owner Daniel Seymour works one on one with every client)",
+  "research_note": "https://www.clemsonwebdesign.com/about-clemson-web-design/"
+ },
+ {
+  "agency_name": "Accent Graphix Design Studio",
+  "website": "https://accentgraphix.com",
+  "country": "USA",
+  "city": "Madison / Milwaukee, WI",
+  "team_size_estimate": "4 on the team page (small edge of the range)",
+  "why_fit": "Madison web design and SEO studio, custom WordPress websites. https://accentgraphix.com/",
+  "contact_name": "Carla Scholz",
+  "contact_title": "Creative Director/Owner",
+  "contact_source_url": "https://accentgraphix.com/about-us/",
+  "email": "carla@accentgraphix.com",
+  "email_source_url": "https://accentgraphix.com/",
+  "hook": "I like that clients work directly with you as owner, not with junior staff. With offices in both Madison and Milwaukee, that's a lot of design on your plate.",
+  "research_note": "About page, team and Madison and Milwaukee offices https://accentgraphix.com/about-us/"
+ },
+ {
+  "agency_name": "Madison Web Works",
+  "website": "https://www.madisonwebworks.com",
+  "country": "USA",
+  "city": "Madison, WI",
+  "team_size_estimate": "team page with several staff (count not confirmed)",
+  "why_fit": "Madison web design and SEO services since 2006. https://www.madisonwebworks.com/",
+  "contact_name": "Colleen Brabender",
+  "contact_title": "President & Founder",
+  "contact_source_url": "https://www.madisonwebworks.com/team",
+  "email": "colleen@madisonwebworks.com",
+  "email_source_url": "https://www.madisonwebworks.com/",
+  "hook": "Twenty years since you founded Madison Web Works in 2006 is a real milestone.",
+  "research_note": "Team page, Colleen founded Madison Web Works in 2006 https://www.madisonwebworks.com/team"
+ },
+ {
+  "agency_name": "Barrie Web",
+  "website": "https://www.barrieweb.com",
+  "country": "Canada",
+  "city": "Barrie, ON",
+  "team_size_estimate": "small team on the Who We Are page (count not confirmed)",
+  "why_fit": "Barrie web design company, WordPress sites, hosting and SEO. https://www.barrieweb.com/",
+  "contact_name": "Brent Kogan",
+  "contact_title": "Owner, Business Manager & SEO Specialist",
+  "contact_source_url": "https://www.barrieweb.com/who-we-are/",
+  "email": "brent@barrieweb.com",
+  "email_source_url": "https://www.barrieweb.com/who-we-are/",
+  "hook": "'We build websites and relationships' is a good motto. I noticed you've been in tech since Georgian College back in 1995.",
+  "research_note": "Who We Are page, team motto and Brent Kogan bio https://www.barrieweb.com/who-we-are/"
+ },
+ {
+  "agency_name": "Website Design Kingston",
+  "website": "https://websitedesignkingston.com",
+  "country": "Canada",
+  "city": "Kingston, ON",
+  "team_size_estimate": "team page with several staff (count not confirmed)",
+  "why_fit": "Kingston web design and development agency. https://websitedesignkingston.com/",
+  "contact_name": "Rick",
+  "contact_title": "President",
+  "contact_source_url": "https://websitedesignkingston.com/about-us/",
+  "hook": "I enjoyed the personal bios on your about page. It's clear the team in Kingston actually knows each other.",
+  "research_note": "About page team bios https://websitedesignkingston.com/about-us/ . Only the first name Rick is published."
+ },
+ {
+  "agency_name": "Freshy",
+  "website": "https://freshysites.com",
+  "country": "USA",
+  "city": "Greenville, SC",
+  "skip": "offers WordPress white label services to agencies and buys web design companies (competitor, rule 19)",
+  "research_note": "Services menu, 'WordPress white label' and 'Sell my web design company' https://freshysites.com/"
  }
 ]
