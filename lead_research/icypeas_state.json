@@ -1,5 +1,5 @@
 {
-  "available": false,
+  "available": true,
   "credits_used": 161,
-  "note": "ICYPEAS_API_KEY missing"
+  "note": "test call ok"
 }
