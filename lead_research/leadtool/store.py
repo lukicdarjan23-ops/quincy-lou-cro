@@ -41,6 +41,11 @@ def save_leads(rows):
         for r in rows:
             w.writerow({c: r.get(c, "") for c in COLUMNS})
     os.replace(tmp, LEADS_CSV)
+    from . import sheets
+    if sheets.enabled():
+        err = sheets.sync(rows, COLUMNS)
+        if err:
+            print(f"  google sheet sync failed (leads.csv is saved): {err}")
 
 
 def load_exclusions():

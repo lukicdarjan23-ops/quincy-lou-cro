@@ -6,6 +6,7 @@
   python -m leadtool progress            one-line progress
   python -m leadtool crawl example.com   direct site crawl (needs open web access)
   python -m leadtool export              leads.xlsx + SUMMARY.md
+  python -m leadtool sheet-sync          push leads.csv to the Google Sheet now
 """
 import json
 import sys
@@ -125,6 +126,10 @@ def main(argv):
     elif cmd == "crawl":
         from .crawler import crawl
         print(json.dumps(crawl(store.normalize_domain(argv[1])), indent=2))
+    elif cmd == "sheet-sync":
+        from . import sheets
+        err = sheets.sync(store.load_leads(), store.COLUMNS)
+        print(f"google sheet {'synced' if not err else 'not synced: ' + err}")
     elif cmd == "export":
         from .export import export
         export()

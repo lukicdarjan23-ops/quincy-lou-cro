@@ -21,3 +21,10 @@ Credentials go in `lead_research/.env` (git-ignored): `ICYPEAS_API_KEY`, `ICYPEA
 `add` enforces the sourcing rules. A name needs a source URL. An email needs a source URL and has to be on the agency's domain (or published by the agency). A guessed address can only become the email if Icypeas confirms it; otherwise it stays in `guessed_unverified`. An `exclude.csv` (domains or names) is honoured if present.
 
 See `DECISIONS.md` for how the first run was done and its limits, and `candidates_backlog.csv` for where to pick up.
+
+## Live Google Sheet
+Set two environment variables and every save also updates the sheet (ready rows first):
+- `GOOGLE_SERVICE_ACCOUNT_JSON`: the service account key file contents
+- `GOOGLE_SHEET_ID`: the long id in the sheet URL, `docs.google.com/spreadsheets/d/<ID>/edit`
+
+Share the sheet (Editor) with the service account's email. `python -m leadtool sheet-sync` pushes on demand. Extra packages: `pip install gspread google-auth`.
