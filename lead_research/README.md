@@ -24,7 +24,7 @@ See `DECISIONS.md` for how the first run was done and its limits, and `candidate
 
 ## Live Google Sheet
 Set two environment variables and every save also updates the sheet (ready rows first):
-- `GOOGLE_SERVICE_ACCOUNT_JSON`: the service account key file contents
+- `GOOGLE_SA_EMAIL` and `GOOGLE_SA_PRIVATE_KEY`: `client_email` and `private_key` from the key file, each on one line (or `GOOGLE_SERVICE_ACCOUNT_JSON` with the whole file on one line)
 - `GOOGLE_SHEET_ID`: the long id in the sheet URL, `docs.google.com/spreadsheets/d/<ID>/edit`
 
 Share the sheet (Editor) with the service account's email. `python -m leadtool sheet-sync` pushes on demand. Extra packages: `pip install gspread google-auth`.

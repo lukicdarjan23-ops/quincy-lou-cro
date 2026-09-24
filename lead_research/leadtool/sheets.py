@@ -14,17 +14,31 @@ _client = None
 TAB = "leads"
 
 
+def _key_info():
+    """Service account key, either as full JSON or as two one-line variables
+    (GOOGLE_SA_EMAIL + GOOGLE_SA_PRIVATE_KEY), which fit .env format."""
+    raw = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "").strip()
+    if raw:
+        return json.load(open(raw)) if not raw.startswith("{") else json.loads(raw)
+    email, key = os.getenv("GOOGLE_SA_EMAIL", ""), os.getenv("GOOGLE_SA_PRIVATE_KEY", "")
+    if email and key:
+        return {"type": "service_account", "client_email": email.strip(),
+                "private_key": key.strip().strip('"').replace("\\n", "\n"),
+                "token_uri": "https://oauth2.googleapis.com/token"}
+    return None
+
+
 def enabled():
-    return bool(os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON") and os.getenv("GOOGLE_SHEET_ID"))
+    has_key = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON") or (
+        os.getenv("GOOGLE_SA_EMAIL") and os.getenv("GOOGLE_SA_PRIVATE_KEY"))
+    return bool(has_key and os.getenv("GOOGLE_SHEET_ID"))
 
 
 def _sheet():
     global _client
     import gspread
     if _client is None:
-        raw = os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"].strip()
-        info = json.load(open(raw)) if not raw.startswith("{") else json.loads(raw)
-        _client = gspread.service_account_from_dict(info)
+        _client = gspread.service_account_from_dict(_key_info())
     book = _client.open_by_key(os.environ["GOOGLE_SHEET_ID"])
     try:
         return book.worksheet(TAB)
