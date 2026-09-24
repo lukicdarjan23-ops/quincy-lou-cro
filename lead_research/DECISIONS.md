@@ -61,3 +61,16 @@ Choices made during the run without asking, with the reason for each.
     - Otherwise it used the general address from the site.
     - Every decision is in `recheck_log.csv`.
 24. Icypeas reports a finished check as `FOUND`, which the first version of the client didn't expect. That's fixed.
+
+## Third pass: reaching 200 (2026-09-24)
+
+25. **Setup in this session.** The Google Sheet sync and Icypeas were both unavailable:
+    - `GOOGLE_SA_PRIVATE_KEY` holds a 40-character hex string. That is the `private_key_id` field of the key file, not `private_key` (which starts with `-----BEGIN PRIVATE KEY-----`). Every save printed `sheet sync failed`, and leads.csv stayed the source of truth. Fix: put the `private_key` value in that variable (on one line, with `\n` for line breaks), then run `python -m leadtool sheet-sync`.
+    - There was no Icypeas key in the container (`.env` is git-ignored and wasn't there, and no env var was set). The client marked itself unavailable on the first guess, so **no credits were used** and every pattern guess went into `guessed_unverified`. With the key back, `python -m leadtool test-icypeas` resets the state, and `recheck.py` can verify the guesses in one pass.
+    - The system `cryptography` package was broken, so gspread couldn't load. A pip copy was installed (`pip install --ignore-installed cryptography cffi`).
+26. **Direct site access worked**, so every new agency was checked on its own site first with the robots.txt-aware crawler: services, owner, team size and published addresses. Web search was used for discovery (about 45 searches) and to find a name when the site didn't publish one. A name from search only counted if a page that could be opened confirmed it. Otherwise it went into `research_note` and the row stayed `needs_check`.
+27. **Expertise.com wasn't used.** Its robots.txt blocks Claude's crawlers by name, so it was left out, even though it would have been a quick source of agency lists.
+28. **Bot-protected sites were left alone**, following rule 22 (webspec.com, interactivepalette.com, cleanslatestudios.ca, stealthmedia.com, helloroketto.com, sixthcitymarketing.com, icscreativeagency.com). They were not added.
+29. **More competitors skipped under rule 19.** These sell white-label or private-label work to other agencies: Aquarian Web Studio, Direct Allied Agency and Freshy.
+30. **Size calls.** Two- and three-person studios were skipped, as in the first run (for example Saltd, Digital808, LimeGlow, Plaid Buffalo, Bragg Media and Capital District Digital). Four-person teams were kept and marked "small edge of the range" (WebPro360, dandelion marketing, Brew City Marketing, Vantage Point and Accent Graphix). Agencies with around 100 staff, or that call themselves the largest in their city, were skipped (Lifted Logic, JLB). Cybernautic, with 22 people, was kept as the top of the range.
+31. **Result:** 200 qualified (165 ready, 83 of them on a generic address, 35 needs_check) and 29 skipped. The new work is in `batches/batch12.json` (backlog) and `batches/batch13.json` (new discovery).
