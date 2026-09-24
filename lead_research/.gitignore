@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 leads.csv.tmp
+crawl.log
+recheck_run.log

@@ -1,5 +1,5 @@
 {
-  "available": false,
-  "credits_used": 0,
-  "note": "network error: ProxyError"
+  "available": true,
+  "credits_used": 161,
+  "note": "test call ok; 1 credit used on curt@hayesweb.ca (ultra_sure)"
 }

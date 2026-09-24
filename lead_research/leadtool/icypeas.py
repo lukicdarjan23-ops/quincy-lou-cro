@@ -5,7 +5,8 @@ in the Authorization header. The secret and user id are loaded but unused.
 Endpoints:
   POST https://app.icypeas.com/api/email-verification   {"email": ...}
   POST https://app.icypeas.com/api/bulk-single-searchs/read   {"id": ...}
-A search is finished when its status is DEBITED (or a NOT_FOUND variant).
+A search is finished once its status leaves NONE / SCHEDULED / IN_PROGRESS
+(observed: FOUND).
 We only treat an address as valid when Icypeas returns it with certainty
 "ultra_sure" or "sure".
 """
@@ -20,7 +21,8 @@ from .config import settings
 BASE = "https://app.icypeas.com/api"
 STATE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "icypeas_state.json")
 VALID_CERTAINTY = {"ultra_sure", "sure"}
-DONE_STATUSES = {"DEBITED", "DEBITED_NOT_FOUND", "NOT_FOUND", "BAD_INPUT", "INSUFFICIENT_FUNDS", "ABORTED"}
+# Anything outside these means the search has finished (FOUND, DEBITED, NOT_FOUND, ...).
+PENDING_STATUSES = {"NONE", "SCHEDULED", "IN_PROGRESS"}
 
 
 class IcypeasUnavailable(Exception):
@@ -99,7 +101,7 @@ def verify(email, poll_seconds=3, max_wait=90):
             status = items[0].get("status", "")
             if status == "INSUFFICIENT_FUNDS":
                 raise IcypeasUnavailable("out of credits")
-            if status in DONE_STATUSES:
+            if status not in PENDING_STATUSES:
                 emails = (items[0].get("results") or {}).get("emails") or []
                 return any(
                     e.get("email", "").lower() == email.lower()

@@ -49,3 +49,15 @@ Choices made during the run without asking, with the reason for each.
     - `leads.csv` holds 84 qualified plus 10 skipped agencies. `python -m leadtool known` lists the domains already covered.
     - `candidates_backlog.csv` lists about 55 agencies found in discovery searches but not yet researched. The next run starts there.
     - **To continue**, start a new session (or raise `CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION` in the environment settings) and ask to resume. Dedupe by domain means nothing gets researched twice. With Icypeas and direct site access allowed, the needs_check rows can also be upgraded (the crawler finds mailto links, and Icypeas verifies the guesses).
+
+## Second pass after network access was opened (next day)
+
+21. **Icypeas works.** The key is accepted (a wrong key gets a 401, yours gets through). Only the API key is needed.
+22. **Every one of the 84 sites was crawled directly**, respecting robots.txt. 69 opened. The other 15 show bot-protection pages or 403s, so I left them alone and didn't try to get around it. The crawler decodes Cloudflare-protected emails and follows each site's own About, Team and Contact links.
+23. **`recheck.py` applied your order to every qualified row:**
+    - It used the owner's address when their own site shows it.
+    - Search-found personal addresses were kept only if the site shows them or Icypeas confirms them. Two were rejected: jason@ohiowebagency.com and chuck@team218.com.
+    - Otherwise it tried guesses with Icypeas one at a time and stopped at the first `ultra_sure` or `sure`.
+    - Otherwise it used the general address from the site.
+    - Every decision is in `recheck_log.csv`.
+24. Icypeas reports a finished check as `FOUND`, which the first version of the client didn't expect. That's fixed.
