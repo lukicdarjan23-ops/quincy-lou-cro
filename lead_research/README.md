@@ -1,6 +1,6 @@
 # evie.design lead research tool
 
-Finds agencies that sell website design (US and Canada, roughly 5 to 20 people), identifies the decision-maker, finds a sourced email, and drafts a personal outreach email. State lives in `leads.csv` (one row per agency, deduped by domain) and is saved after every agency.
+Finds agencies that sell website design (US and Canada, roughly 5 to 20 people), identifies the decision-maker, and finds a sourced email. It does not draft outreach emails (the user writes those), so `subject` and `email_body` stay empty for new rows. State lives in `leads.csv` (one row per agency, deduped by domain) and is saved after every agency.
 
 ## Setup
 ```

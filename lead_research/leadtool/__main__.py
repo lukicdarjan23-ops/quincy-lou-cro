@@ -12,7 +12,7 @@ import json
 import sys
 
 from . import icypeas, store
-from .compose import compose, guesses
+from .compose import guesses
 
 TARGET = 200
 
@@ -82,8 +82,7 @@ def build_row(d):
     if not name:
         needs.append("no named decision-maker found")
 
-    first = name.split()[0] if name else ""
-    row["subject"], row["email_body"] = compose(row["agency_name"], domain, first, d["hook"], d.get("subject"))
+    # Outreach copy is written by the user, so no subject or body is drafted here.
     row["status"] = "needs_check: " + "; ".join(needs) if needs else "ready"
     return row
 
