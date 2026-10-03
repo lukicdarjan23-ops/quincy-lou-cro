@@ -1,4 +1,4 @@
-import { analyzePage } from "@/lib/analyze";
+import { analyzePage, type PageContext } from "@/lib/analyze";
 import { MIN_WORD_COUNT, REUSE_WINDOW_DAYS } from "@/lib/config";
 import { AuditError } from "@/lib/errors";
 import { buildFactSheet } from "@/lib/extract";
@@ -17,13 +17,20 @@ export type RunAuditResult = {
  * extract, analyze, validate, save. A row is only written once a valid
  * report exists, so a failed run never leaves a broken audit behind.
  */
-export async function runAudit(input: { url: string; forceRerun?: boolean }): Promise<RunAuditResult> {
+export async function runAudit(input: {
+  url: string;
+  forceRerun?: boolean;
+  context?: PageContext;
+}): Promise<RunAuditResult> {
   const url = normalizeUrl(input.url);
+  const goal = input.context?.goal?.trim().slice(0, 200) ?? "";
+  const trafficSource = input.context?.trafficSource?.trim().slice(0, 100) ?? "";
 
   if (!input.forceRerun) {
     const since = new Date(Date.now() - REUSE_WINDOW_DAYS * 24 * 60 * 60 * 1000);
     const existing = await prisma.audit.findFirst({
-      where: { url, createdAt: { gte: since } },
+      // Goal and traffic source change the scoring, so they are part of the match.
+      where: { url, goal, trafficSource, createdAt: { gte: since } },
       orderBy: { createdAt: "desc" },
       select: { id: true },
     });
@@ -42,10 +49,10 @@ export async function runAudit(input: { url: string; forceRerun?: boolean }): Pr
     );
   }
 
-  const report = await analyzePage(factSheet, url);
+  const report = await analyzePage(factSheet, url, { goal, trafficSource });
 
   const saved = await prisma.audit.create({
-    data: { url, reportJson: JSON.stringify(report) },
+    data: { url, goal, trafficSource, reportJson: JSON.stringify(report) },
     select: { id: true },
   });
 

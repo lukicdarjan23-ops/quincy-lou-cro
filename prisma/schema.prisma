@@ -8,10 +8,38 @@ datasource db {
 }
 
 model Audit {
-  id         String   @id @default(uuid())
-  url        String
-  createdAt  DateTime @default(now())
-  reportJson String
+  id            String      @id @default(uuid())
+  url           String
+  goal          String      @default("")
+  trafficSource String      @default("")
+  createdAt     DateTime    @default(now())
+  reportJson    String
+  publicRuns    PublicRun[]
 
   @@index([url, createdAt])
+}
+
+/// One row per visitor request on the public analyzer. Used for the rate limit
+/// and as the handle the visitor gets back, so the audit id (which opens the
+/// full report with recommendations) never reaches the public page.
+model PublicRun {
+  id        String   @id @default(uuid())
+  ipHash    String
+  createdAt DateTime @default(now())
+  auditId   String?
+  audit     Audit?   @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  leads     Lead[]
+
+  @@index([ipHash, createdAt])
+}
+
+model Lead {
+  id           String    @id @default(uuid())
+  email        String
+  wantsMeeting Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  publicRunId  String
+  publicRun    PublicRun @relation(fields: [publicRunId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
 }

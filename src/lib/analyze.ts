@@ -7,12 +7,25 @@ import { validateReport, type AuditReport } from "@/lib/report-schema";
 
 const MAX_TOKENS = 8_000;
 
-function buildUserMessage(factSheet: FactSheet, canonicalUrl: string): string {
+export type PageContext = {
+  /** The one action the page owner wants a visitor to take. */
+  goal?: string;
+  /** Where most visitors arrive from, e.g. paid ads or email. */
+  trafficSource?: string;
+};
+
+function buildUserMessage(factSheet: FactSheet, canonicalUrl: string, context: PageContext): string {
   return [
     `PAGE URL: ${canonicalUrl}`,
     `FINAL URL AFTER REDIRECTS: ${factSheet.finalUrl}`,
     factSheet.fetchTruncated
       ? "NOTE: the HTML response was larger than the fetch cap and was truncated."
+      : "",
+    context.goal
+      ? `PRIMARY GOAL STATED BY THE PAGE OWNER: ${context.goal}. Judge Clarity, Offer and Navigation against this action.`
+      : "",
+    context.trafficSource
+      ? `MAIN TRAFFIC SOURCE STATED BY THE PAGE OWNER: ${context.trafficSource}. Weigh Relevance and message match with this visitor in mind.`
       : "",
     "",
     "FACT SHEET EXTRACTED FROM THE HTML:",
@@ -94,10 +107,14 @@ async function requestReport(
  * match the schema. Anything past that fails loudly instead of saving a
  * half-valid report.
  */
-export async function analyzePage(factSheet: FactSheet, canonicalUrl: string): Promise<AuditReport> {
+export async function analyzePage(
+  factSheet: FactSheet,
+  canonicalUrl: string,
+  context: PageContext = {},
+): Promise<AuditReport> {
   const client = new Anthropic({ apiKey: getAnthropicApiKey() });
 
-  const firstUserMessage = buildUserMessage(factSheet, canonicalUrl);
+  const firstUserMessage = buildUserMessage(factSheet, canonicalUrl, context);
   const messages: Anthropic.Messages.MessageParam[] = [{ role: "user", content: firstUserMessage }];
 
   const firstResponse = await requestReport(client, messages);

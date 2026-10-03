@@ -29,3 +29,14 @@ export const REUSE_WINDOW_DAYS = 7;
 
 /** Pages with less text than this are flagged rather than scored. */
 export const MIN_WORD_COUNT = 100;
+
+/** Fresh public analyses one visitor (by IP) may start per 24 hours. */
+export function getPublicDailyLimit(): number {
+  const raw = Number(process.env.PUBLIC_DAILY_LIMIT);
+  return Number.isInteger(raw) && raw > 0 ? raw : 3;
+}
+
+/** Where the "book a call" buttons on the public analyzer go. Falls back to the report CTA link. */
+export function getBookingUrl(): string | null {
+  return process.env.BOOKING_URL?.trim() || process.env.QUINCY_LOU_CTA_URL?.trim() || null;
+}
