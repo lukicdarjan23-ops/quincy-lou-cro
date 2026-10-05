@@ -12,6 +12,7 @@ COLUMNS = [
     "agency_name", "website", "domain", "country", "city", "team_size_estimate",
     "why_fit", "contact_name", "contact_title", "contact_source_url", "email",
     "email_source", "email_confidence", "guessed_unverified", "subject",
+    "opening_line", "opening_source_url",
     "email_body", "research_note", "status",
 ]
 

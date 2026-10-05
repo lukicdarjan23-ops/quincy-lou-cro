@@ -82,8 +82,14 @@ def build_row(d):
     if not name:
         needs.append("no named decision-maker found")
 
+    # The personal first paragraph must point at the agency's own page showing that work.
+    opening = (d.get("opening_line") or "").strip()
+    if opening and not d.get("opening_source_url"):
+        raise ValueError(f"{domain}: opening line without source URL")
+    row["opening_line"] = opening
+    row["opening_source_url"] = d.get("opening_source_url", "") if opening else ""
     first = name.split()[0] if name else ""
-    row["subject"], row["email_body"] = compose(row["agency_name"], domain, first, d["hook"], d.get("subject"))
+    row["subject"], row["email_body"] = compose(row["agency_name"], domain, first, opening, d.get("subject"))
     row["status"] = "needs_check: " + "; ".join(needs) if needs else "ready"
     return row
 

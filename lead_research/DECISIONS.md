@@ -61,3 +61,9 @@ Choices made during the run without asking, with the reason for each.
     - Otherwise it used the general address from the site.
     - Every decision is in `recheck_log.csv`.
 24. Icypeas reports a finished check as `FOUND`, which the first version of the client didn't expect. That's fixed.
+
+## 2026-10-05, new intro and personal opening line
+- The intro text is now Darjan's fixed template (same as the app's Settings). Only the first paragraph changes per agency.
+- New columns `opening_line` and `opening_source_url`. An opening line must name real work the agency shows on its own site, and the page that shows it goes in `opening_source_url`. No line without a source.
+- `email_body` is a preview for the sheet. The app renders the real email from its own template, so editing the template in the app is enough.
+- The 84 existing rows were re-rendered with the new text. Their opening lines are still empty and show `[OPENING LINE MISSING ...]`, because agency sites are blocked by this environment's network policy right now. The app will not send an intro while that marker is there.
