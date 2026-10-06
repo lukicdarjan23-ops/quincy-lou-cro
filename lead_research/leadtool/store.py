@@ -25,10 +25,40 @@ SHEET_COLUMNS = [
 # The app reads the recipient's time zone from "City, ST".
 STATE_CODE = re.compile(r",\s*[A-Z]{2}\b")
 
+REGIONS = {
+    "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR", "california": "CA", "colorado": "CO",
+    "connecticut": "CT", "delaware": "DE", "district of columbia": "DC", "florida": "FL", "georgia": "GA",
+    "hawaii": "HI", "idaho": "ID", "illinois": "IL", "indiana": "IN", "iowa": "IA", "kansas": "KS",
+    "kentucky": "KY", "louisiana": "LA", "maine": "ME", "maryland": "MD", "massachusetts": "MA",
+    "michigan": "MI", "minnesota": "MN", "mississippi": "MS", "missouri": "MO", "montana": "MT",
+    "nebraska": "NE", "nevada": "NV", "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM",
+    "new york": "NY", "north carolina": "NC", "north dakota": "ND", "ohio": "OH", "oklahoma": "OK",
+    "oregon": "OR", "pennsylvania": "PA", "rhode island": "RI", "south carolina": "SC", "south dakota": "SD",
+    "tennessee": "TN", "texas": "TX", "utah": "UT", "vermont": "VT", "virginia": "VA", "washington": "WA",
+    "west virginia": "WV", "wisconsin": "WI", "wyoming": "WY",
+    "alberta": "AB", "british columbia": "BC", "manitoba": "MB", "new brunswick": "NB",
+    "newfoundland": "NL", "nova scotia": "NS", "ontario": "ON", "prince edward island": "PE",
+    "quebec": "QC", "saskatchewan": "SK", "yukon": "YT",
+}
+
+
+def with_state_code(city):
+    """'Rhode Island' -> 'Rhode Island, RI', so the app can tell the time zone. Only a state or
+    province name already in the text is used; nothing is guessed."""
+    city = (city or "").strip()
+    if not city or STATE_CODE.search(city.upper()):
+        return city
+    low = city.lower()
+    # Longest names first, so "west virginia" wins over "virginia".
+    for name in sorted(REGIONS, key=len, reverse=True):
+        if re.search(rf"\b{name}\b", low):
+            return f"{city}, {REGIONS[name]}"
+    return city
+
 
 def owner_email(row):
     """The decision-maker's own address, published by the agency or confirmed by Icypeas.
-    A general inbox (info@, hello@) is not one: it stays in leads.csv as evidence only."""
+    A general inbox (info@, hello@) is not one and is not kept."""
     if row.get("email_source", "").startswith("generic"):
         return ""
     return row.get("email", "")

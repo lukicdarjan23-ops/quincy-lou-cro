@@ -25,7 +25,7 @@ Credentials go in `lead_research/.env` (git-ignored): `ICYPEAS_API_KEY`, `ICYPEA
 See `DECISIONS.md` for how the first run was done and its limits, and `candidates_backlog.csv` for where to pick up.
 
 ## Live Google Sheet
-Every save also rewrites the sheet with the eight columns the outreach app reads (agency_name, website, contact_name, email, city, opening_line, opening_source_url, status), ready rows first. `status` is `ready` only when the owner's name, the owner's own address, a "City, ST" and a sourced opening line are all there; otherwise it says what is missing. Rows added to the sheet by hand are kept. Set two environment variables to turn it on:
+Every save also rewrites the sheet with the eight columns the outreach app reads (agency_name, website, contact_name, email, city, opening_line, opening_source_url, status), ready rows first. `status` is `ready` only when the owner's name, the owner's own address, a "City, ST" and a sourced opening line are all there; otherwise it says what is missing. Agencies without the owner's own address go to a second tab, "missing owner email", which the app never reads. Rows added to either tab by hand are kept. Set two environment variables to turn it on:
 - `GOOGLE_SA_EMAIL` and `GOOGLE_SA_PRIVATE_KEY`: `client_email` and `private_key` from the key file, each on one line (or `GOOGLE_SERVICE_ACCOUNT_JSON` with the whole file on one line)
 - `GOOGLE_SHEET_ID`: the long id in the sheet URL, `docs.google.com/spreadsheets/d/<ID>/edit`
 

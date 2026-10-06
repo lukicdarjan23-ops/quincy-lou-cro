@@ -42,7 +42,6 @@ def export():
     q = [r for r in rows if store.is_qualified(r)]
     ready = [r for r in q if r["status"] == "ready"]
     owner = [r for r in q if store.owner_email(r)]
-    generic = [r for r in q if r["email_source"].startswith("generic")]
     only_opening = [r for r in q if r["status"] == "missing: opening line"]
     skipped = [r for r in rows if not store.is_qualified(r)]
     by_country = {}
@@ -55,8 +54,7 @@ def export():
         f"- Ready to send: {len(ready)}",
         f"- Only the opening line missing: {len(only_opening)}",
         f"- With the owner's own address (published or Icypeas verified): {len(owner)}",
-        f"- General inbox only (info@, hello@), not sent to: {len(generic)}",
-        f"- No address at all: {len(q) - len(owner) - len(generic)}",
+        f"- Without it (sheet tab \"missing owner email\", never sent to): {len(q) - len(owner)}",
         f"- Researched and skipped (did not qualify): {len(skipped)}",
         f"- Icypeas credits used: {icypeas.credits_used()}",
         "",
