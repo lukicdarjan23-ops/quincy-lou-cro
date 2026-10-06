@@ -1,12 +1,62 @@
 [
-{"domain":"idahowebsites.com","angle":"project","opening_line":"Saw the Acadia Building Co. site you built, with the completed projects shown next to their original floor plans.","opening_source_url":"https://idahowebsites.com/portfolio/acadia-building-co/"},
-{"domain":"tagteamdesign.com","angle":"project","opening_line":"Saw the Dunlavy Speakers site you built, the immersive product sections suit a speaker brand well.","opening_source_url":"https://www.tagteamdesign.com/our-work/"},
-{"domain":"muletowndigital.com","angle":"project","opening_line":"Saw the Silicon Ranch site you built. I've designed a few solar sites myself, so it caught my eye.","opening_source_url":"https://muletowndigital.com/work/"},
-{"domain":"azurodigital.com","angle":"project","opening_line":"Saw the Turnbull School site you built in Ottawa, a warm and inviting feel is hard to get right for a school. I've designed a few school sites myself.","opening_source_url":"https://azurodigital.com/web-design-portfolio/"},
-{"domain":"marvelmarketing.ca","angle":"industry","opening_line":"Looks like a lot of your clients are home service trades. I've designed a few plumbing and restoration sites myself.","opening_source_url":"https://marvelmarketing.ca/"},
-{"domain":"redfoxvisual.com","angle":"project","opening_line":"Saw the RG Pro Builders redesign on your site, a messaging overhaul aimed at bringing in more construction leads. I've designed a few construction sites myself.","opening_source_url":"https://redfoxvisual.com/"},
-{"domain":"lifewebanddesign.com","angle":"project","opening_line":"Saw the Arc & Oak Millwork case study, the family cabinetry shop in Surrey. I've designed a few construction sites myself.","opening_source_url":"https://www.lifewebanddesign.com/portfolio/carpenter-web-design-in-surrey/"},
-{"domain":"thrivewebdesigns.com","angle":"project","opening_line":"Saw the Express Plumbing, Heating & Air site you built in Nampa. I've designed a few plumbing and HVAC sites myself.","opening_source_url":"https://www.thrivewebdesigns.com/website-design-and-development-portfolio/"},
-{"domain":"lakedesignmn.com","angle":"project","opening_line":"Saw the Elo Coffee Co. Shopify build, a brand built on third-party tested bags and 10% of profits given away is a good story to design around.","opening_source_url":"https://www.lakedesignmn.com/portfolio/elo-coffee-co"},
-{"domain":"chariotcreative.com","angle":"project","opening_line":"Saw the Wildlife Society site you built, member dashboards and smart search across 90 years of content in one place.","opening_source_url":"https://chariotcreative.com/case-study/branding-web-design-wildlife-society/"}
+ {
+  "domain": "idahowebsites.com",
+  "angle": "project",
+  "opening_line": "Saw the Acadia Building Co. site you built, with the completed projects shown next to their original floor plans.",
+  "opening_source_url": "https://idahowebsites.com/portfolio/acadia-building-co/"
+ },
+ {
+  "domain": "tagteamdesign.com",
+  "angle": "project",
+  "opening_line": "Saw the Dunlavy Speakers site you built, the immersive product sections suit a speaker brand well.",
+  "opening_source_url": "https://www.tagteamdesign.com/our-work/"
+ },
+ {
+  "domain": "muletowndigital.com",
+  "angle": "project",
+  "opening_line": "Saw the Silicon Ranch site you built. I've designed a few solar sites myself, so it caught my eye.",
+  "opening_source_url": "https://muletowndigital.com/work/"
+ },
+ {
+  "domain": "azurodigital.com",
+  "angle": "project",
+  "opening_line": "Saw the Turnbull School site you built in Ottawa, a warm and inviting feel is hard to get right for a school. I've designed a few school sites myself.",
+  "opening_source_url": "https://azurodigital.com/web-design-portfolio/"
+ },
+ {
+  "domain": "marvelmarketing.ca",
+  "angle": "industry",
+  "opening_line": "Looks like a lot of your clients are home service trades. I've designed a few plumbing and restoration sites myself.",
+  "opening_source_url": "https://marvelmarketing.ca/"
+ },
+ {
+  "domain": "redfoxvisual.com",
+  "angle": "project",
+  "opening_line": "Saw the RG Pro Builders redesign on your site, a messaging overhaul aimed at bringing in more construction leads. I've designed a few construction sites myself.",
+  "opening_source_url": "https://redfoxvisual.com/"
+ },
+ {
+  "domain": "lifewebanddesign.com",
+  "angle": "project",
+  "opening_line": "Saw the Arc & Oak Millwork case study, the family cabinetry shop in Surrey. I've designed a few construction sites myself.",
+  "opening_source_url": "https://www.lifewebanddesign.com/portfolio/carpenter-web-design-in-surrey/"
+ },
+ {
+  "domain": "thrivewebdesigns.com",
+  "angle": "project",
+  "opening_line": "Saw the Express Plumbing, Heating & Air site you built in Nampa. I've designed a few plumbing and HVAC sites myself.",
+  "opening_source_url": "https://www.thrivewebdesigns.com/website-design-and-development-portfolio/"
+ },
+ {
+  "domain": "lakedesignmn.com",
+  "angle": "project",
+  "opening_line": "Saw the Elo Coffee Co. Shopify build, a brand built on third-party tested bags and 10% of profits given away is a good story to design around.",
+  "opening_source_url": "https://www.lakedesignmn.com/portfolio/elo-coffee-co"
+ },
+ {
+  "domain": "chariotcreative.com",
+  "angle": "award",
+  "opening_line": "Congrats on the 2026 Webby for the Wildlife Society site, and the People's Voice win for Best User Experience.",
+  "opening_source_url": "https://chariotcreative.com/case-study/branding-web-design-wildlife-society/"
+ }
 ]
