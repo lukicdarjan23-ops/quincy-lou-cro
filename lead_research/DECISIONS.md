@@ -112,3 +112,11 @@ Choices made during the run without asking, with the reason for each.
   - `industry`: the field most of their clients are in, used only when it is one Darjan has designed for (his list: construction, renovation, dentists, clinics, auto detailing, lawyers, vets, doctors, healthcare, heavy machinery, finance, gardening, landscaping, real estate, housing, schools, education centers, plumbers, HVAC, restoration, farms, internet providers, fitness centers, commercial and residential solar, lighting, accounting, pest control, restaurants, cafes, cocktail bars, insurance). Where possible it is combined with a project from that field.
 - The platform angle (Webflow, WordPress) is not used, at Darjan's request.
 - Opening lines never use relative time ("last week"), because a line can wait days before it goes out.
+
+## 2026-10-06, opening lines: rules changed by Darjan, and sites that could not be opened
+- **hiring has no 30 day limit.** An open web, UI or visual designer job on the agency's own careers page counts, unless the page says it is filled. Nothing from a previous year counts. Roles that also ask for development (for example "Graphic Designer / WordPress Developer", "Web Designer / Front-End Developer", "Web Developer / Designer") do not count.
+- **award has no 30 day limit.** Any award or listing from the current year (2026) counts, and the year has to be on the source page.
+- **Sites that could not be opened, and why** (checked with plain requests, robots.txt respected, nothing circumvented):
+  - Blocked by this environment's own network allowlist, which is fixable in the environment settings: `www.thecreativemomentum.com` and `www.ballamedia.ca` (the proxy answers "Host not in allowlist").
+  - Bot challenge on the site's side: matchboxdesigngroup.com and bullfinch.io (Cloudflare "Just a moment"), toohillconsulting.com, kcwebdesigner.com, hudsonbrauntz.com, ladybugz.com, lgxbranding.com, letsattract.com (SiteGround captcha challenge), themightymo.com (Cloudflare challenge), ignitewebdesign.ca (Vercel security checkpoint), jyzdesign.com (home page opens, inner pages return 403 from the Sucuri firewall).
+  - These stay without an opening line until a source can be opened the normal way. Making a script pass a bot challenge is the circumvention that rule 22 rules out.
