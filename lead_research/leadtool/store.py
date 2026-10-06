@@ -8,13 +8,46 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEADS_CSV = os.path.join(ROOT, "leads.csv")
 EXCLUDE_CSV = os.path.join(ROOT, "exclude.csv")
 
+# leads.csv keeps the full research record, with a source for every fact.
 COLUMNS = [
     "agency_name", "website", "domain", "country", "city", "team_size_estimate",
     "why_fit", "contact_name", "contact_title", "contact_source_url", "email",
-    "email_source", "email_confidence", "guessed_unverified", "subject",
-    "opening_line", "opening_source_url",
-    "email_body", "research_note", "status",
+    "email_source", "email_confidence", "guessed_unverified",
+    "opening_line", "opening_source_url", "research_note", "status",
 ]
+
+# The Google Sheet shows only what the outreach app needs to send.
+SHEET_COLUMNS = [
+    "agency_name", "website", "contact_name", "email", "city",
+    "opening_line", "opening_source_url", "status",
+]
+
+# The app reads the recipient's time zone from "City, ST".
+STATE_CODE = re.compile(r",\s*[A-Z]{2}\b")
+
+
+def owner_email(row):
+    """The decision-maker's own address, published by the agency or confirmed by Icypeas.
+    A general inbox (info@, hello@) is not one: it stays in leads.csv as evidence only."""
+    if row.get("email_source", "").startswith("generic"):
+        return ""
+    return row.get("email", "")
+
+
+def lead_status(row):
+    """ready when everything the app needs is there, otherwise 'missing: ...'. Skipped rows keep their reason."""
+    if not is_qualified(row):
+        return row["status"]
+    missing = []
+    if not row.get("contact_name"):
+        missing.append("owner name")
+    if not owner_email(row):
+        missing.append("owner email")
+    if not STATE_CODE.search((row.get("city") or "").upper()):
+        missing.append("city")
+    if not row.get("opening_line") or not row.get("opening_source_url"):
+        missing.append("opening line")
+    return "missing: " + ", ".join(missing) if missing else "ready"
 
 
 def normalize_domain(value):

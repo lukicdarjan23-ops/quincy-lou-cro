@@ -7,12 +7,14 @@
   python -m leadtool crawl example.com   direct site crawl (needs open web access)
   python -m leadtool export              leads.xlsx + SUMMARY.md
   python -m leadtool sheet-sync          push leads.csv to the Google Sheet now
+  python -m leadtool openings file.json  set opening lines: [{"domain", "opening_line", "opening_source_url"}]
+  python -m leadtool restatus            recompute every status (ready / missing: ...) and save
 """
 import json
 import sys
 
 from . import icypeas, store
-from .compose import compose, guesses
+from .compose import clean_opening, guesses
 
 TARGET = 200
 
@@ -51,7 +53,6 @@ def build_row(d):
         if email.split("@")[-1] != domain and not d.get("published_by_agency"):
             raise ValueError(f"{domain}: {email} is off-domain and not published by the agency")
 
-    needs = []
     if email and email_type == "personal":
         row["email"] = email
         row["email_source"] = d["email_source_url"]
@@ -74,23 +75,17 @@ def build_row(d):
             row.update(email=verified, email_source="icypeas_verified", email_confidence="high")
         else:
             row["guessed_unverified"] = "; ".join(cands)
-            if email:  # step 4: the agency's general address
+            if email:  # step 4: the agency's general address, kept as evidence but never sent to
                 row.update(email=email, email_source=f"generic | {d['email_source_url']}",
                            email_confidence="medium")
-            else:
-                needs.append("no published email and guesses unverified")
-    if not name:
-        needs.append("no named decision-maker found")
 
     # The personal first paragraph must point at the agency's own page showing that work.
     opening = (d.get("opening_line") or "").strip()
     if opening and not d.get("opening_source_url"):
         raise ValueError(f"{domain}: opening line without source URL")
-    row["opening_line"] = opening
+    row["opening_line"] = clean_opening(opening)
     row["opening_source_url"] = d.get("opening_source_url", "") if opening else ""
-    first = name.split()[0] if name else ""
-    row["subject"], row["email_body"] = compose(row["agency_name"], domain, first, opening, d.get("subject"))
-    row["status"] = "needs_check: " + "; ".join(needs) if needs else "ready"
+    row["status"] = store.lead_status(row)
     return row
 
 
@@ -98,10 +93,40 @@ def progress_line():
     rows = store.load_leads()
     q = [r for r in rows if store.is_qualified(r)]
     ready = sum(r["status"] == "ready" for r in q)
-    generic = sum(r["status"] == "ready" and r["email_source"].startswith("generic") for r in q)
-    return (f"qualified {len(q)}/{TARGET} | ready {ready} (generic {generic}) | "
-            f"needs_check {len(q) - ready} | skipped {len(rows) - len(q)} | "
+    no_owner = sum(not store.owner_email(r) for r in q)
+    return (f"qualified {len(q)}/{TARGET} | ready {ready} | missing something {len(q) - ready} "
+            f"(no owner email {no_owner}) | skipped {len(rows) - len(q)} | "
             f"icypeas credits used {icypeas.credits_used()}")
+
+
+def cmd_openings(path):
+    """Add opening lines to agencies already in leads.csv. Each line needs the page that shows that work."""
+    with open(path) as f:
+        records = json.load(f)
+    rows = store.load_leads()
+    by_domain = {r["domain"]: r for r in rows}
+    for d in records:
+        domain = store.normalize_domain(d["domain"])
+        row = by_domain.get(domain)
+        if not row:
+            print(f"not in leads.csv, skipped: {domain}")
+            continue
+        line, url = clean_opening(d.get("opening_line", "")), (d.get("opening_source_url") or "").strip()
+        if line and not url:
+            raise ValueError(f"{domain}: opening line without source URL")
+        row.update(opening_line=line, opening_source_url=url if line else "")
+        row["status"] = store.lead_status(row)
+        print(f"{row['status']}: {domain}")
+    store.save_leads(rows)
+    print(progress_line())
+
+
+def cmd_restatus():
+    rows = store.load_leads()
+    for r in rows:
+        r["status"] = store.lead_status(r)
+    store.save_leads(rows)
+    print(progress_line())
 
 
 def cmd_add(path):
@@ -132,9 +157,13 @@ def main(argv):
     elif cmd == "crawl":
         from .crawler import crawl
         print(json.dumps(crawl(store.normalize_domain(argv[1])), indent=2))
+    elif cmd == "openings":
+        cmd_openings(argv[1])
+    elif cmd == "restatus":
+        cmd_restatus()
     elif cmd == "sheet-sync":
         from . import sheets
-        err = sheets.sync(store.load_leads(), store.COLUMNS)
+        err = sheets.sync(store.load_leads())
         print(f"google sheet {'synced' if not err else 'not synced: ' + err}")
     elif cmd == "export":
         from .export import export

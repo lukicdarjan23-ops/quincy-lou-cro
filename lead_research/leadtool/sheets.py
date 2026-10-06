@@ -4,11 +4,15 @@ Turned on when both environment variables are set:
   GOOGLE_SERVICE_ACCOUNT_JSON  the service account key (file contents, or a path to the file)
   GOOGLE_SHEET_ID              the id from the sheet URL, docs.google.com/spreadsheets/d/<ID>/edit
 The sheet must be shared (Editor) with the service account's client_email.
-Every save rewrites the "leads" tab with ready rows first. leads.csv stays the
-source of truth, so a failed sync never loses data.
+Every save rewrites the "leads" tab: qualified agencies only, ready rows first,
+and only the columns the outreach app needs (store.SHEET_COLUMNS). leads.csv stays
+the source of truth with every source URL, so a failed sync never loses data.
+Rows added by hand to the sheet (a website that is not in leads.csv) are kept.
 """
 import json
 import os
+
+from .store import SHEET_COLUMNS
 
 _client = None
 TAB = "leads"
@@ -46,14 +50,36 @@ def _sheet():
         return book.add_worksheet(TAB, rows=1000, cols=20)
 
 
-def sync(rows, columns):
+def sheet_row(r):
+    """One leads.csv row as the sheet shows it."""
+    from .store import lead_status, owner_email
+    out = {c: r.get(c, "") for c in SHEET_COLUMNS}
+    out["email"] = owner_email(r)
+    out["status"] = lead_status(r)
+    return out
+
+
+def sync(rows, columns=None):
     """Rewrite the leads tab. Returns an error string, or '' on success."""
     if not enabled():
         return "not configured"
     from .export import _rank
+    from .store import is_qualified, normalize_domain
     try:
         ws = _sheet()
-        data = [columns] + [[r.get(c, "") for c in columns] for r in sorted(rows, key=_rank)]
+        ours = {r["domain"] for r in rows}
+        # Keep rows someone added by hand, mapped by header name.
+        current = ws.get_all_values()
+        kept = []
+        if current:
+            header = current[0]
+            for values in current[1:]:
+                old = dict(zip(header, values))
+                domain = old.get("domain") or normalize_domain(old.get("website", ""))
+                if domain and domain not in ours:
+                    kept.append({c: old.get(c, "") for c in SHEET_COLUMNS})
+        shown = [sheet_row(r) for r in rows if is_qualified(r)]
+        data = [SHEET_COLUMNS] + [[r[c] for c in SHEET_COLUMNS] for r in sorted(shown, key=_rank) + kept]
         ws.clear()
         ws.update(data, "A1", value_input_option="RAW")
         ws.freeze(rows=1)

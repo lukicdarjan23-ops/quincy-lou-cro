@@ -134,12 +134,7 @@ def main():
                 else:
                     how = (how + "; " if how else "") + "no address found"
 
-        needs = []
-        if not r["email"]:
-            needs.append("no published email and no Icypeas-confirmed address")
-        if not name:
-            needs.append("no named decision-maker found")
-        r["status"] = "needs_check: " + "; ".join(needs) if needs else "ready"
+        r["status"] = store.lead_status(r)
         store.save_leads(rows)
         log.writerow([domain, before[0], before[1], r["status"], r["email"], how])
         logf.flush()

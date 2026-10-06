@@ -1,6 +1,6 @@
 # evie.design lead research tool
 
-Finds agencies that sell website design (US and Canada, roughly 5 to 20 people), identifies the decision-maker, finds a sourced email, and drafts a personal outreach email. State lives in `leads.csv` (one row per agency, deduped by domain) and is saved after every agency.
+Finds agencies that sell website design (US and Canada, roughly 5 to 20 people), identifies the decision-maker, finds the decision-maker's own sourced email, and holds the personal opening line for the outreach app. State lives in `leads.csv` (one row per agency, deduped by domain, with a source for every fact) and is saved after every agency.
 
 ## Setup
 ```
@@ -16,6 +16,8 @@ Credentials go in `lead_research/.env` (git-ignored): `ICYPEAS_API_KEY`, `ICYPEA
 | `python -m leadtool crawl domain.com` | robots.txt-aware crawl for emails and web-design service pages |
 | `python -m leadtool known` | domains already in `leads.csv` |
 | `python -m leadtool progress` | one-line status including Icypeas credits used |
+| `python -m leadtool openings file.json` | add opening lines to known agencies: `[{"domain", "opening_line", "opening_source_url"}]` |
+| `python -m leadtool restatus` | recompute every status and resync the sheet |
 | `python -m leadtool export` | writes `leads.xlsx` (ready rows first) and `SUMMARY.md` |
 
 `add` enforces the sourcing rules. A name needs a source URL. An email needs a source URL and has to be on the agency's domain (or published by the agency). A guessed address can only become the email if Icypeas confirms it; otherwise it stays in `guessed_unverified`. An `exclude.csv` (domains or names) is honoured if present.
@@ -23,7 +25,7 @@ Credentials go in `lead_research/.env` (git-ignored): `ICYPEAS_API_KEY`, `ICYPEA
 See `DECISIONS.md` for how the first run was done and its limits, and `candidates_backlog.csv` for where to pick up.
 
 ## Live Google Sheet
-Set two environment variables and every save also updates the sheet (ready rows first):
+Every save also rewrites the sheet with the eight columns the outreach app reads (agency_name, website, contact_name, email, city, opening_line, opening_source_url, status), ready rows first. `status` is `ready` only when the owner's name, the owner's own address, a "City, ST" and a sourced opening line are all there; otherwise it says what is missing. Rows added to the sheet by hand are kept. Set two environment variables to turn it on:
 - `GOOGLE_SA_EMAIL` and `GOOGLE_SA_PRIVATE_KEY`: `client_email` and `private_key` from the key file, each on one line (or `GOOGLE_SERVICE_ACCOUNT_JSON` with the whole file on one line)
 - `GOOGLE_SHEET_ID`: the long id in the sheet URL, `docs.google.com/spreadsheets/d/<ID>/edit`
 

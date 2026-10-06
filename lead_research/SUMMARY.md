@@ -1,10 +1,11 @@
 # Lead research summary
 
 - Qualified agencies found: 84
-- Ready to send: 75
-  - to a personal address of the decision-maker: 58
-  - generic address only (owner named in the greeting): 17
-- Needs check: 9
+- Ready to send: 0
+- Only the opening line missing: 58
+- With the owner's own address (published or Icypeas verified): 58
+- General inbox only (info@, hello@), not sent to: 20
+- No address at all: 6
 - Researched and skipped (did not qualify): 10
 - Icypeas credits used: 161
 
