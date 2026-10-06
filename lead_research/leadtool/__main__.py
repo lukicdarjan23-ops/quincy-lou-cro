@@ -7,7 +7,7 @@
   python -m leadtool crawl example.com   direct site crawl (needs open web access)
   python -m leadtool export              leads.xlsx + SUMMARY.md
   python -m leadtool sheet-sync          push leads.csv to the Google Sheet now
-  python -m leadtool openings file.json  set opening lines: [{"domain", "opening_line", "opening_source_url"}]
+  python -m leadtool openings file.json  set opening lines: [{"domain", "angle", "opening_line", "opening_source_url"}]
   python -m leadtool restatus            recompute every status (ready / missing: ...) and save
 """
 import json
@@ -85,6 +85,7 @@ def build_row(d):
         raise ValueError(f"{domain}: opening line without source URL")
     row["opening_line"] = clean_opening(opening)
     row["opening_source_url"] = d.get("opening_source_url", "") if opening else ""
+    row["angle"] = (d.get("angle") or "").strip().lower() if opening else ""
     row["status"] = store.lead_status(row)
     return row
 
@@ -112,9 +113,12 @@ def cmd_openings(path):
             print(f"not in leads.csv, skipped: {domain}")
             continue
         line, url = clean_opening(d.get("opening_line", "")), (d.get("opening_source_url") or "").strip()
+        angle = (d.get("angle") or "").strip().lower()
         if line and not url:
             raise ValueError(f"{domain}: opening line without source URL")
-        row.update(opening_line=line, opening_source_url=url if line else "")
+        if line and angle not in store.ANGLES:
+            raise ValueError(f"{domain}: angle must be one of {', '.join(store.ANGLES)}")
+        row.update(opening_line=line, opening_source_url=url if line else "", angle=angle if line else "")
         row["status"] = store.lead_status(row)
         print(f"{row['status']}: {domain}")
     store.save_leads(rows)

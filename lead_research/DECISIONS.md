@@ -103,3 +103,12 @@ Choices made during the run without asking, with the reason for each.
 - The 134 qualified and skipped agencies taken earlier from "Copy of leads" got their full record back from that branch: country, team size, why they fit, the contact's title and the page their name came from. Every contact name now has a source again. Digital808 was stored under `guru.digital808.com`; it is `digital808.com`, as in that pass.
 - General inboxes stay deleted. Where that branch's research notes named one ("general address info@... replaced"), the address is now written as "a general address". The raw research files (batches, recheck_log.csv) still show the addresses as they were found.
 - `verify_guesses.py` now sets the status with the same rule as everything else (ready / missing: ...).
+
+## 2026-10-06, angle of the opening line
+- New column `angle` (in leads.csv and the sheet, next to the opening line). It says what the opening line is about, and every opening line needs one, otherwise the status is `missing: angle`:
+  - `hiring`: the agency has an open designer job (web, UI or visual designer, not a developer or marketing role) posted in the last 30 days and still open. The outreach app sends these agencies version D, written for that case, and sends them first.
+  - `award`: an award or listing from the last 30 days. The date has to be on the source page. Also sent before the rest.
+  - `project`: one of the newest pieces in their own portfolio.
+  - `industry`: the field most of their clients are in, used only when it is one Darjan has designed for (his list: construction, renovation, dentists, clinics, auto detailing, lawyers, vets, doctors, healthcare, heavy machinery, finance, gardening, landscaping, real estate, housing, schools, education centers, plumbers, HVAC, restoration, farms, internet providers, fitness centers, commercial and residential solar, lighting, accounting, pest control, restaurants, cafes, cocktail bars, insurance). Where possible it is combined with a project from that field.
+- The platform angle (Webflow, WordPress) is not used, at Darjan's request.
+- Opening lines never use relative time ("last week"), because a line can wait days before it goes out.

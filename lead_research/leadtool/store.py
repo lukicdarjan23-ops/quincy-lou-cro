@@ -13,14 +13,20 @@ COLUMNS = [
     "agency_name", "website", "domain", "country", "city", "team_size_estimate",
     "why_fit", "contact_name", "contact_title", "contact_source_url", "email",
     "email_source", "email_confidence", "guessed_unverified",
-    "opening_line", "opening_source_url", "research_note", "status",
+    "angle", "opening_line", "opening_source_url", "research_note", "status",
 ]
 
 # The Google Sheet shows only what the outreach app needs to send.
 SHEET_COLUMNS = [
     "agency_name", "website", "contact_name", "email", "city",
-    "opening_line", "opening_source_url", "status",
+    "angle", "opening_line", "opening_source_url", "status",
 ]
+
+# What the opening line is about, strongest first. "hiring" (an open designer job, posted in the last
+# 30 days) gets its own email, version D, in the outreach app. "award" counts only if it is at most
+# 30 days old. "project" is one of the newest pieces in their portfolio, "industry" a field of their
+# clients that Darjan has designed for too.
+ANGLES = ("hiring", "award", "project", "industry")
 
 # The app reads the recipient's time zone from "City, ST".
 STATE_CODE = re.compile(r",\s*[A-Z]{2}\b")
@@ -77,6 +83,8 @@ def lead_status(row):
         missing.append("city")
     if not row.get("opening_line") or not row.get("opening_source_url"):
         missing.append("opening line")
+    elif row.get("angle") not in ANGLES:
+        missing.append("angle")
     return "missing: " + ", ".join(missing) if missing else "ready"
 
 
