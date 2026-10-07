@@ -146,3 +146,6 @@ Choices made during the run without asking, with the reason for each.
 - Older finds not used without Darjan's approval: Adam Silverman on The Rich Redmond Show (Sep 12, 2025), Toby Cryns on Hallway Chats ep. 177 (Aug 9, 2025).
 - kcwebdesigner.com: the listed owner Phil Singleton died on May 23, 2025 (Wikipedia). The row is marked DO NOT SEND in research_note.
 - Chariot moved from award to project (the Webby is not from the last 30 days and no owner source was found).
+
+## 2026-10-07, project lines checked for an industry majority
+- All 73 project lines were checked against the agency's own portfolio: is the majority of the listed clients in one field from Darjan's list? Only three are: Team Vision (Hawaii homes and residential communities), Rev Pop (Milwaukee restaurants and bars, its largest category) and Scribe (6 of 11 featured projects are restaurants and food). They now carry an industry line. The rest have mixed portfolios (for example Life Web & Design 5 of 12 construction, Kris Chislett about 16 of 60 construction), so they stay project.
