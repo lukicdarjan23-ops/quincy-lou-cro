@@ -22,14 +22,17 @@ SHEET_COLUMNS = [
     "angle", "opening_line", "opening_source_url", "status",
 ]
 
-# What the opening line is about, strongest first. "hiring" (an open designer job, posted in the last
-# 30 days) gets its own email, version D, in the outreach app. "award" counts only if it is at most
-# 30 days old. "owner" is something the owner said or published (podcast, interview, article, talk),
-# at most 12 months old; the app sends those leads only version A or C. "project" is one of the newest
-# pieces in their portfolio, "industry" a field of their clients that Darjan has designed for too.
-# "none" means nothing real was found to open with: the app then sends version A without an opening
-# line, or C with a fixed first line. A "project" line is only kept when it also fits "industry".
-ANGLES = ("hiring", "award", "owner", "project", "industry", "none")
+# What the opening line is about, and so which email the outreach app sends (Darjan, 7 Oct 2026):
+#   hiring    an open designer job, posted in the last 30 days            -> D
+#   valley    the agency is in California's Central Valley (set by the tool, see apply_valley) -> F, no line
+#   award     an award or listing from the last 30 days                   -> B1 or B2
+#   owner     something the owner said or wrote about running the business, at most 12 months old -> A
+#   industry  the agency says on its site it builds for one or two industries Darjan knows;
+#             the tool writes the line (leadtool/industry.py)              -> E
+#   none      nothing real to open with                                   -> C1 or C2, no line
+# "project" is no longer used; an old project line gets C1 or C2 without it.
+ANGLES = ("hiring", "valley", "award", "owner", "project", "industry", "none")
+NO_LINE_ANGLES = ("none", "valley")
 
 # The app reads the recipient's time zone from "City, ST".
 STATE_CODE = re.compile(r",\s*[A-Z]{2}\b")
@@ -65,6 +68,48 @@ def with_state_code(city):
     return city
 
 
+# Darjan worked four years for an agency in Fresno, so agencies anywhere in the Central Valley get
+# version F. The valley's 18 counties (Wikipedia, "Central Valley (California)"): Butte, Colusa, Glenn,
+# Fresno, Kern, Kings, Madera, Merced, Placer, San Joaquin, Sacramento, Shasta, Stanislaus, Sutter,
+# Tehama, Tulare, Yolo, Yuba. Below are the towns on the valley floor in those counties (foothill and
+# desert towns such as Paradise, Auburn, Tehachapi and Ridgecrest left out), plus the county names.
+CENTRAL_VALLEY = [
+    "chico", "oroville", "gridley", "biggs", "colusa", "williams", "orland", "willows",
+    "fresno", "clovis", "sanger", "selma", "reedley", "kingsburg", "fowler", "parlier", "kerman", "coalinga",
+    "firebaugh", "mendota", "orange cove", "huron",
+    "bakersfield", "delano", "wasco", "shafter", "mcfarland", "arvin", "taft",
+    "hanford", "lemoore", "corcoran", "avenal", "madera", "chowchilla",
+    "merced", "atwater", "los banos", "livingston", "gustine", "dos palos",
+    "roseville", "rocklin", "lincoln",
+    "stockton", "tracy", "manteca", "lodi", "lathrop", "ripon", "escalon",
+    "sacramento", "elk grove", "rancho cordova", "citrus heights", "folsom", "galt", "carmichael", "fair oaks",
+    "redding", "anderson", "shasta lake",
+    "modesto", "turlock", "ceres", "oakdale", "riverbank", "patterson", "newman", "hughson", "waterford",
+    "yuba city", "live oak", "red bluff", "corning",
+    "visalia", "tulare", "porterville", "dinuba", "lindsay", "exeter", "farmersville", "woodlake",
+    "davis", "woodland", "west sacramento", "winters", "marysville", "wheatland",
+    "butte county", "glenn county", "kern county", "kings county", "placer county", "san joaquin county",
+    "stanislaus county", "sutter county", "tehama county", "yolo county", "yuba county", "central valley",
+]
+_VALLEY = re.compile(r"\b(" + "|".join(re.escape(t) for t in sorted(CENTRAL_VALLEY, key=len, reverse=True)) + r")\b")
+
+
+def in_central_valley(city):
+    """True for a California town in the Central Valley ("Fresno, CA", "Rancho Cordova / Sacramento, CA")."""
+    low = (city or "").lower()
+    california = re.search(r",\s*ca\b", low) or "california" in low
+    return bool(california and _VALLEY.search(low))
+
+
+def apply_valley(row):
+    """A Central Valley agency gets angle "valley" (version F) unless it is hiring a designer (D comes
+    first). Its opening line is kept in leads.csv but not used. Returns True when the angle changed."""
+    if in_central_valley(row.get("city")) and row.get("angle") not in ("hiring", "valley") and is_qualified(row):
+        row["angle"] = "valley"
+        return True
+    return False
+
+
 def owner_email(row):
     """The decision-maker's own address, published by the agency or confirmed by Icypeas.
     A general inbox (info@, hello@) is not one and is not kept."""
@@ -84,7 +129,7 @@ def lead_status(row):
         missing.append("owner email")
     if not STATE_CODE.search((row.get("city") or "").upper()):
         missing.append("city")
-    if row.get("angle") == "none":
+    if row.get("angle") in NO_LINE_ANGLES:
         pass  # no opening line on purpose
     elif not row.get("opening_line") or not row.get("opening_source_url"):
         missing.append("opening line")

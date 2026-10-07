@@ -125,3 +125,21 @@ Choices made during the run without asking, with the reason for each.
 - New angle `none`: no opening line on purpose. The app sends version A without its opening paragraph, or version C with one fixed first line from Settings ("I had a few ideas on how {agency} could take on more website work without hiring for it.", after Eric Nowoslawski's "I had some ideas" opener). Never B. Such a lead still waits for Darjan's Ready on Opening lines.
 - Order of angles to look for: hiring, award (30 days), owner, industry (a project from a field Darjan has designed for, the only way "project" stays), else none.
 - Version A's question is now "When a few website projects land at {agency} at the same time, does the design side keep up, or is that where things start to slip?" (the deadline-or-weekend question was too heavy as a first line).
+
+## 2026-10-07, eight email versions, one per angle
+Darjan and Claude rewrote the first emails. Each angle now has its own email (and its own subject) in the outreach app, and the versions from the sections above (A or C for owner, "Work like that" in B) no longer apply.
+
+| Angle | Email | Subject | Opening line |
+|---|---|---|---|
+| `hiring` | D | your designer opening | the open designer job |
+| `valley` | F | Fresno connection | none, the email names the town |
+| `award` | B1 or B2 (random, fixed per lead) | after the win / busy after the win? | the award |
+| `owner` | A | your take | what the owner said or wrote |
+| `industry` | E | your clients | written by the tool |
+| `none` (and old `project` lines) | C1 or C2 (random, fixed per lead) | without hiring / busy stretches | none |
+
+- Order when an agency fits more than one: hiring, valley, award, owner, industry, none. A project line on its own is no longer used.
+- **The opening line is only the premise, one sentence.** Every email now follows it with a fixed sentence that does the bridging, so a line that already ends in a reaction or question gives two in a row. Owner (A) is followed by "It's clear you care how the work turns out, and that's usually what makes outside help hard to say yes to.", so the owner line must be about how they run the business (clients, quality, process, design, team). Private things (hobbies, family, sport, how the agency was founded) do not fit; such a lead gets `none`. Award (B1, B2) is followed by "A win like that..." or "Wins like that...", so the line just states the award, in the form "Saw {agency} took [award] for [project] in [month]."
+- **`valley`**: Darjan worked four years for an agency in Fresno. Every agency in California's Central Valley (Wikipedia's 18 counties) gets F unless it is hiring. The tool sets this itself from the city (`store.apply_valley`, run by `openings` and `restatus`); the town list is `store.CENTRAL_VALLEY`. No opening line is needed, one already written stays in leads.csv but is not sent.
+- **`industry`** only when the agency says on its own site that it builds websites for one or two industries from Darjan's list (the portfolio need not show it). The researcher gives the tool that sentence as `industry_text` with the page as `opening_source_url`, and the tool writes "Noticed {agency} focuses on websites for dental practices." (`leadtool/industry.py`, which also knows other names for each industry, such as lawyer or attorney for law firms). Narrowest first: one or two industries, then "home service businesses" (said outright, or three or more home-service industries), then "small businesses" only when that is the site's main message. Three or more mixed industries is not a specialist: no E. Try a text with `python -m leadtool industry "..."`.
+- Industry list, after Darjan dropped schools, cafes, cocktail bars and gardening: construction, renovation, dentists, clinics, auto detailing, lawyers, vets, doctors, healthcare, heavy machinery, finance, landscaping, real estate, housing, education centers, plumbers, HVAC, restoration, farms, internet providers, fitness centers, commercial and residential solar, lighting, accounting, pest control, restaurants, insurance.
