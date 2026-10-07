@@ -139,3 +139,10 @@ Choices made during the run without asking, with the reason for each.
 - The app sends `owner` leads only version A or C, because version B opens with "Work like that usually means a full pipeline", which does not follow something the owner said. Send order in the app: hiring, award, owner, then the rest, because an award goes stale in days and a published piece in months.
 - Where nothing good is found for an owner, the best project or industry line stays. No empty personalization.
 - The research tool in this environment caps web search at 200 a session (decision 20), so an owner pass over 131 agencies takes more than one session or a higher CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION.
+
+## 2026-10-07, owner pass over the leads tab
+- Sources in this order: the owner's signed posts on the agency blog, then outside search (podcasts, interviews, guest posts), then a first-person founder story on the about page, otherwise the old line stays. Only pieces signed with the owner's name, at most 6 months old ("Last Updated" counts), and close to design, sites or their clients. Hosting, SEO, redirects, AI strategy and business studies were skipped.
+- Result: 14 owner lines (7 in the first 25, 2 in the second, 2 in the third, 2 in the fourth, 1 among the agencies that had no line). Outside search found almost nothing usable in about 60 searches; nearly every hit came from blogs and about pages.
+- Older finds not used without Darjan's approval: Adam Silverman on The Rich Redmond Show (Sep 12, 2025), Toby Cryns on Hallway Chats ep. 177 (Aug 9, 2025).
+- kcwebdesigner.com: the listed owner Phil Singleton died on May 23, 2025 (Wikipedia). The row is marked DO NOT SEND in research_note.
+- Chariot moved from award to project (the Webby is not from the last 30 days and no owner source was found).
