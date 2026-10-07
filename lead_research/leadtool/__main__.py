@@ -10,6 +10,8 @@
   python -m leadtool openings file.json  set opening lines: [{"domain", "angle", "opening_line", "opening_source_url"}]
                                          angle "industry": give "industry_text" (what the agency's site says it builds
                                          for) and its page as opening_source_url; the tool writes the line
+                                         angle "hobby": only opening_source_url (where the owner mentions it),
+                                         no line; Darjan writes the line and subject in the app
   python -m leadtool industry "TEXT"     show the industry line the tool would write for that text
   python -m leadtool restatus            recompute every status (ready / missing: ...) and save
 """
@@ -126,11 +128,16 @@ def cmd_openings(path):
                 continue
         if line and not url:
             raise ValueError(f"{domain}: opening line without source URL")
-        if (line or angle == "none") and angle not in store.ANGLES:
+        if (line or angle in ("none", "hobby")) and angle not in store.ANGLES:
             raise ValueError(f"{domain}: angle must be one of {', '.join(store.ANGLES)}")
+        if angle == "hobby" and not url:
+            raise ValueError(f"{domain}: hobby needs the source link in opening_source_url")
         if angle == "none":
             line, url = "", ""  # nothing real to open with, the app sends C1 or C2
-        row.update(opening_line=line, opening_source_url=url if line else "", angle=angle if (line or angle == "none") else "")
+        if angle == "hobby":
+            line = ""  # Darjan writes the hobby line and its subject himself, in the app
+        keep = bool(line) or angle in ("none", "hobby")
+        row.update(opening_line=line, opening_source_url=url if (line or angle == "hobby") else "", angle=angle if keep else "")
         store.apply_valley(row)
         row["status"] = store.lead_status(row)
         print(f"{row['status']}: {domain}")

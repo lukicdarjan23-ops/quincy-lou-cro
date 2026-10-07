@@ -23,15 +23,17 @@ SHEET_COLUMNS = [
 ]
 
 # What the opening line is about, and so which email the outreach app sends (Darjan, 7 Oct 2026):
-#   hiring    an open designer job, posted in the last 30 days            -> D
+#   hiring    an open designer job, posted in the last 50 days            -> D
+#   hobby     the owner is publicly into one of Darjan's hobbies or teams; the researcher gives only the
+#             source link, Darjan writes the line and subject in the app -> A2
 #   valley    the agency is in California's Central Valley (set by the tool, see apply_valley) -> F, no line
-#   award     an award or listing from the last 30 days                   -> B1 or B2
+#   award     an award or listing from the current year                   -> B1 or B2
 #   owner     something the owner said or wrote about running the business, at most 12 months old -> A
 #   industry  the agency says on its site it builds for one or two industries Darjan knows;
 #             the tool writes the line (leadtool/industry.py)              -> E
 #   none      nothing real to open with                                   -> C1 or C2, no line
 # "project" is no longer used; an old project line gets C1 or C2 without it.
-ANGLES = ("hiring", "valley", "award", "owner", "project", "industry", "none")
+ANGLES = ("hiring", "hobby", "valley", "award", "owner", "project", "industry", "none")
 NO_LINE_ANGLES = ("none", "valley")
 
 # The app reads the recipient's time zone from "City, ST".
@@ -103,8 +105,9 @@ def in_central_valley(city):
 
 def apply_valley(row):
     """A Central Valley agency gets angle "valley" (version F) unless it is hiring a designer (D comes
-    first). Its opening line is kept in leads.csv but not used. Returns True when the angle changed."""
-    if in_central_valley(row.get("city")) and row.get("angle") not in ("hiring", "valley") and is_qualified(row):
+    first) or a hobby was found (Darjan writes A2 himself). Its opening line is kept in leads.csv but
+    not used. Returns True when the angle changed."""
+    if in_central_valley(row.get("city")) and row.get("angle") not in ("hiring", "hobby", "valley") and is_qualified(row):
         row["angle"] = "valley"
         return True
     return False
@@ -131,6 +134,9 @@ def lead_status(row):
         missing.append("city")
     if row.get("angle") in NO_LINE_ANGLES:
         pass  # no opening line on purpose
+    elif row.get("angle") == "hobby":
+        if not row.get("opening_source_url"):
+            missing.append("hobby source")  # Darjan writes the line in the app, from this link
     elif not row.get("opening_line") or not row.get("opening_source_url"):
         missing.append("opening line")
     elif row.get("angle") not in ANGLES:
