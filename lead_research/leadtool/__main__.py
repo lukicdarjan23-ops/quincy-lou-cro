@@ -116,9 +116,11 @@ def cmd_openings(path):
         angle = (d.get("angle") or "").strip().lower()
         if line and not url:
             raise ValueError(f"{domain}: opening line without source URL")
-        if line and angle not in store.ANGLES:
+        if (line or angle == "none") and angle not in store.ANGLES:
             raise ValueError(f"{domain}: angle must be one of {', '.join(store.ANGLES)}")
-        row.update(opening_line=line, opening_source_url=url if line else "", angle=angle if line else "")
+        if angle == "none":
+            line, url = "", ""  # nothing real to open with, the app sends A or C without a personal line
+        row.update(opening_line=line, opening_source_url=url if line else "", angle=angle if (line or angle == "none") else "")
         row["status"] = store.lead_status(row)
         print(f"{row['status']}: {domain}")
     store.save_leads(rows)

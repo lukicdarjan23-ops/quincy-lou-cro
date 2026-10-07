@@ -119,3 +119,9 @@ Choices made during the run without asking, with the reason for each.
 - The app sends `owner` leads only version A or C, because version B opens with "Work like that usually means a full pipeline", which does not follow something the owner said. Send order in the app: hiring, award, owner, then the rest, because an award goes stale in days and a published piece in months.
 - Where nothing good is found for an owner, the best project or industry line stays. No empty personalization.
 - The research tool in this environment caps web search at 200 a session (decision 20), so an owner pass over 131 agencies takes more than one session or a higher CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION.
+
+## 2026-10-07, no opening line instead of a weak one
+- Darjan found the "project" lines (praise of one site) the weakest, and they were 70 of 101. Josh Braun's split: with a real trigger, open with it; without one, do not invent personalization but ask about the problem. Version A already does that, so a weak line now gives way to none.
+- New angle `none`: no opening line on purpose. The app sends version A without its opening paragraph, or version C with one fixed first line from Settings ("I had a few ideas on how {agency} could take on more website work without hiring for it.", after Eric Nowoslawski's "I had some ideas" opener). Never B. Such a lead still waits for Darjan's Ready on Opening lines.
+- Order of angles to look for: hiring, award (30 days), owner, industry (a project from a field Darjan has designed for, the only way "project" stays), else none.
+- Version A's question is now "When a few website projects land at {agency} at the same time, does the design side keep up, or is that where things start to slip?" (the deadline-or-weekend question was too heavy as a first line).

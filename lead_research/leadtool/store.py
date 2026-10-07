@@ -27,7 +27,9 @@ SHEET_COLUMNS = [
 # 30 days old. "owner" is something the owner said or published (podcast, interview, article, talk),
 # at most 12 months old; the app sends those leads only version A or C. "project" is one of the newest
 # pieces in their portfolio, "industry" a field of their clients that Darjan has designed for too.
-ANGLES = ("hiring", "award", "owner", "project", "industry")
+# "none" means nothing real was found to open with: the app then sends version A without an opening
+# line, or C with a fixed first line. A "project" line is only kept when it also fits "industry".
+ANGLES = ("hiring", "award", "owner", "project", "industry", "none")
 
 # The app reads the recipient's time zone from "City, ST".
 STATE_CODE = re.compile(r",\s*[A-Z]{2}\b")
@@ -82,7 +84,9 @@ def lead_status(row):
         missing.append("owner email")
     if not STATE_CODE.search((row.get("city") or "").upper()):
         missing.append("city")
-    if not row.get("opening_line") or not row.get("opening_source_url"):
+    if row.get("angle") == "none":
+        pass  # no opening line on purpose
+    elif not row.get("opening_line") or not row.get("opening_source_url"):
         missing.append("opening line")
     elif row.get("angle") not in ANGLES:
         missing.append("angle")
