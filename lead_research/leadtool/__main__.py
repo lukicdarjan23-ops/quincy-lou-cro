@@ -8,6 +8,11 @@
   python -m leadtool export              leads.xlsx + SUMMARY.md
   python -m leadtool sheet-sync          push leads.csv to the Google Sheet now
   python -m leadtool openings file.json  set opening lines: [{"domain", "angle", "opening_line", "opening_source_url"}]
+                                         angle "industry": give "industry_text" (what the agency's site says it builds
+                                         for) and its page as opening_source_url; the tool writes the line
+                                         angle "hobby": only opening_source_url (where the owner mentions it),
+                                         no line; Darjan writes the line and subject in the app
+  python -m leadtool industry "TEXT"     show the industry line the tool would write for that text
   python -m leadtool restatus            recompute every status (ready / missing: ...) and save
 """
 import json
@@ -15,6 +20,7 @@ import sys
 
 from . import icypeas, store
 from .compose import clean_opening, guesses
+from .industry import opening_line as industry_line
 
 TARGET = 200
 
@@ -86,6 +92,7 @@ def build_row(d):
     row["opening_line"] = clean_opening(opening)
     row["opening_source_url"] = d.get("opening_source_url", "") if opening else ""
     row["angle"] = (d.get("angle") or "").strip().lower() if opening else ""
+    store.apply_valley(row)
     row["status"] = store.lead_status(row)
     return row
 
@@ -114,11 +121,24 @@ def cmd_openings(path):
             continue
         line, url = clean_opening(d.get("opening_line", "")), (d.get("opening_source_url") or "").strip()
         angle = (d.get("angle") or "").strip().lower()
+        if angle == "industry" and d.get("industry_text"):
+            line = industry_line(row["agency_name"], d["industry_text"])
+            if not line:
+                print(f"no industry from the list in that text, skipped: {domain}")
+                continue
         if line and not url:
             raise ValueError(f"{domain}: opening line without source URL")
-        if line and angle not in store.ANGLES:
+        if (line or angle in ("none", "hobby")) and angle not in store.ANGLES:
             raise ValueError(f"{domain}: angle must be one of {', '.join(store.ANGLES)}")
-        row.update(opening_line=line, opening_source_url=url if line else "", angle=angle if line else "")
+        if angle == "hobby" and not url:
+            raise ValueError(f"{domain}: hobby needs the source link in opening_source_url")
+        if angle == "none":
+            line, url = "", ""  # nothing real to open with, the app sends C1 or C2
+        if angle == "hobby":
+            line = ""  # Darjan writes the hobby line and its subject himself, in the app
+        keep = bool(line) or angle in ("none", "hobby")
+        row.update(opening_line=line, opening_source_url=url if (line or angle == "hobby") else "", angle=angle if keep else "")
+        store.apply_valley(row)
         row["status"] = store.lead_status(row)
         print(f"{row['status']}: {domain}")
     store.save_leads(rows)
@@ -128,6 +148,8 @@ def cmd_openings(path):
 def cmd_restatus():
     rows = store.load_leads()
     for r in rows:
+        if store.apply_valley(r):
+            print(f"Central Valley, angle valley (version F): {r['domain']} ({r['city']})")
         r["status"] = store.lead_status(r)
     store.save_leads(rows)
     print(progress_line())
@@ -163,6 +185,8 @@ def main(argv):
         print(json.dumps(crawl(store.normalize_domain(argv[1])), indent=2))
     elif cmd == "openings":
         cmd_openings(argv[1])
+    elif cmd == "industry":
+        print(industry_line("{agency}", " ".join(argv[1:])) or "no industry from the list")
     elif cmd == "restatus":
         cmd_restatus()
     elif cmd == "sheet-sync":
