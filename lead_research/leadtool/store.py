@@ -24,9 +24,10 @@ SHEET_COLUMNS = [
 
 # What the opening line is about, strongest first. "hiring" (an open designer job, posted in the last
 # 30 days) gets its own email, version D, in the outreach app. "award" counts only if it is at most
-# 30 days old. "project" is one of the newest pieces in their portfolio, "industry" a field of their
-# clients that Darjan has designed for too.
-ANGLES = ("hiring", "award", "project", "industry")
+# 30 days old. "owner" is something the owner said or published (podcast, interview, article, talk),
+# at most 12 months old; the app sends those leads only version A or C. "project" is one of the newest
+# pieces in their portfolio, "industry" a field of their clients that Darjan has designed for too.
+ANGLES = ("hiring", "award", "owner", "project", "industry")
 
 # The app reads the recipient's time zone from "City, ST".
 STATE_CODE = re.compile(r",\s*[A-Z]{2}\b")

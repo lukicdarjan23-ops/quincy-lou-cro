@@ -132,3 +132,10 @@ Choices made during the run without asking, with the reason for each.
 - Its careers page has an open Senior Designer job (web design and UI/UX, no development, not marked filled, no date), so the angle is `hiring`.
 - The site banner says "CloudMellow Acquires The Creative Momentum". That is noted in `research_note`. Darjan decides whether an acquired agency still gets the email.
 - Now 101 of 131 have an opening line: 82 project, 14 industry, 3 award, 2 hiring. 30 carry the manual check note.
+
+## 2026-10-06, owner angle
+- New angle `owner`: the opening line is about something the owner said or published, not about the agency's site. Sources are public and professional only (podcast and interview appearances, articles by the owner, talks and webinars, newsletters, local press, the founder's own words on the agency site). No LinkedIn log-in or scraping: LinkedIn's rules forbid automated collection and it risks the account. A public post that turns up in search results may be used.
+- The owner must be identified with certainty (agency, role and city match). Nothing private (family, home, personal life). At most 12 months old, older items are flagged. The line quotes or reacts to one specific idea, with a detail only someone who read or heard it would know, and ends with a real reaction or a short question about them, not praise.
+- The app sends `owner` leads only version A or C, because version B opens with "Work like that usually means a full pipeline", which does not follow something the owner said. Send order in the app: hiring, award, owner, then the rest, because an award goes stale in days and a published piece in months.
+- Where nothing good is found for an owner, the best project or industry line stays. No empty personalization.
+- The research tool in this environment caps web search at 200 a session (decision 20), so an owner pass over 131 agencies takes more than one session or a higher CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION.
