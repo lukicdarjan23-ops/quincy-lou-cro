@@ -126,8 +126,8 @@ Choices made during the run without asking, with the reason for each.
 - Order of angles to look for: hiring, award (30 days), owner, industry (a project from a field Darjan has designed for, the only way "project" stays), else none.
 - Version A's question is now "When a few website projects land at {agency} at the same time, does the design side keep up, or is that where things start to slip?" (the deadline-or-weekend question was too heavy as a first line).
 
-## 2026-10-07, eight email versions, one per angle
-Darjan and Claude rewrote the first emails. Each angle now has its own email (and its own subject) in the outreach app, and the versions from the sections above (A or C for owner, "Work like that" in B) no longer apply.
+## 2026-10-07, nine email versions, chosen by angle
+Darjan and Claude rewrote the first emails. The angle now decides the email in the outreach app: nine versions (A1, A2, B1, B2, C1, C2, D, E, F) for seven angles. Award and none have two versions each, one picked at random per lead; each version has its own subject except A2, whose subject Darjan writes per lead, and the versions from the sections above (A or C for owner, "Work like that" in B) no longer apply.
 
 | Angle | Email | Subject | Opening line |
 |---|---|---|---|
