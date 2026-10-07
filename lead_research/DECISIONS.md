@@ -186,3 +186,10 @@ Darjan and Claude rewrote the first emails. The angle now decides the email in t
 - Award lines state the award only, from a 2026 listing whose year is on the page (Chariot, Red Spot, Big Red Jelly). YEG Digital and Perspektiiv also have 2026 awards but keep owner, which comes first.
 - Industry lines come from the tool, fed with the agency's own sentence. "Small businesses" was used only where that is the site's headline or first line (Mvestor, dandelion, Black Door, Branch, Daor).
 - kcwebdesigner.com was left out on purpose: the listed owner died in 2025, so the lead stays not ready.
+
+## 2026-10-07, review of the reworked lines (Darjan and Claude)
+- Owner lines no longer all open with "In your post ... you wrote". Each is phrased its own way (the idea first and the source after, or the source without "you wrote"), with the same verified content. Keep that variety in new lines.
+- Four owner lines got a better quote from the same source: 1Brand (rankings drop when the technical side gets less care than the visual side, not because of good design), Southern Digital (shorter), Marvel (generic sites are basically free now, so real experience gets more valuable), Bonfire (the firms that get the call make it easy to see their experience fits).
+- Moved to none: Exalto (no author on the page, reads as SEO copy), Big Red Jelly (the "50Pros 2026 Top 10 Agency" is a badge among many Clutch badges, not an award), and the five "small businesses" industry lines (Mvestor, dandelion, Black Door, Daor, and Branch, whose "small business focus" describes the agency itself, not its clients). "Small businesses" is too broad for E to mean anything.
+- Awards checked: Chariot (Webby People's Voice 2026, on the Webby site) and Red Spot (#1 Dallas web design company on Clutch, 2026, on their awards page) stay.
+- Result, 130 ready leads: 105 none, 11 owner, 5 hobby, 4 valley, 3 industry, 2 award. File `openings/review_2026-10-07.json`.
