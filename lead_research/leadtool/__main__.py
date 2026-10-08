@@ -8,18 +8,23 @@
   python -m leadtool export              leads.xlsx + SUMMARY.md
   python -m leadtool sheet-sync          push leads.csv to the Google Sheet now
   python -m leadtool openings file.json  set opening lines: [{"domain", "angle", "opening_line", "opening_source_url"}]
-                                         angle "industry": give "industry_text" (what the agency's site says it builds
-                                         for) and its page as opening_source_url; the tool writes the line
+                                         angle "industry": give "industry_text" (the site's sentence naming its clients)
+                                         and its page as opening_source_url; the tool writes the line
+                                         angle "award": also "award_name" and "award_evidence" (exact words from the page)
+                                         angle "hiring": also "job_title" and "posted_date" (YYYY-MM-DD)
+                                         records that fail a check are printed as REJECTED and left unchanged
                                          angle "hobby": only opening_source_url (where the owner mentions it),
                                          no line; Darjan writes the line and subject in the app
   python -m leadtool industry "TEXT"     show the industry line the tool would write for that text
   python -m leadtool restatus            recompute every status (ready / missing: ...) and save
 """
 import json
+import re
 import sys
 
 from . import icypeas, store
 from .compose import clean_opening, guesses
+from .checks import check_award, check_hiring
 from .industry import opening_line as industry_line
 
 TARGET = 200
@@ -121,11 +126,20 @@ def cmd_openings(path):
             continue
         line, url = clean_opening(d.get("opening_line", "")), (d.get("opening_source_url") or "").strip()
         angle = (d.get("angle") or "").strip().lower()
-        if angle == "industry" and d.get("industry_text"):
-            line = industry_line(row["agency_name"], d["industry_text"])
+        # Hiring, award and industry lines go out without Darjan's Ready, so they must pass these checks.
+        if angle == "industry":
+            line = industry_line(row["agency_name"], d.get("industry_text") or "")
             if not line:
-                print(f"no industry from the list in that text, skipped: {domain}")
+                print(f"REJECTED {domain}: industry needs industry_text naming one or two industries from the list as the agency's clients")
                 continue
+        problem = check_award({**d, "opening_line": line}) if angle == "award" else check_hiring({**d, "opening_line": line}) if angle == "hiring" else ""
+        if problem:
+            print(f"REJECTED {domain}: {problem}")
+            continue
+        evidence = {"award": d.get("award_evidence"), "hiring": f"{d.get('job_title')} posted {d.get('posted_date')}", "industry": d.get("industry_text")}.get(angle)
+        if evidence:
+            note = re.sub(r"\s*\| evidence \(\w+\): .*$", "", row.get("research_note", ""))
+            row["research_note"] = f"{note} | evidence ({angle}): {evidence}".strip(" |")
         if line and not url:
             raise ValueError(f"{domain}: opening line without source URL")
         if (line or angle in ("none", "hobby")) and angle not in store.ANGLES:

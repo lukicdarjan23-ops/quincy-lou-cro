@@ -6,8 +6,12 @@ Order, narrowest first (Darjan, 7 Oct 2026):
   1. one or two industries from the list below, in the agency's own words or any other name for them
   2. "home service businesses", when the agency says "home services", or names three or more
      industries that are all home services
-  3. "small businesses", only when that is what the agency says it builds for
 Anything else (three or more mixed industries, nothing from the list) is not a specialist: no E.
+"Small businesses" no longer counts (Darjan, 7 Oct 2026): nearly every agency says it, so E meant nothing.
+
+Every industry has to be named as the agency's CLIENTS, right after words like "for", "serving",
+"we work with" or "specializing in" (CLIENT_CUE). "The personal attention of a small business" describes
+the agency itself and once slipped through (Branch Marketing, 7 Oct 2026); now it does not count.
 """
 import re
 
@@ -33,7 +37,7 @@ INDUSTRIES = [
     ("plumbing companies", ["plumber", "plumbers", "plumbing"], True),
     ("HVAC companies", ["hvac", "heating and cooling", "heating and air", "air conditioning", "ac repair"], True),
     ("restoration companies", ["restoration", "water damage", "fire damage", "mold remediation"], True),
-    ("farms", ["farm", "farms", "agriculture", "agricultural", "ranch", "ranches"], False),
+    ("farms", ["farm", "farms", "farmer", "farmers", "agriculture", "agricultural", "ranch", "ranches", "rancher", "ranchers"], False),
     ("internet providers", ["internet provider", "internet providers", "internet service provider", "internet service providers", "isp", "isps", "broadband"], False),
     ("gyms and fitness studios", ["gym", "gyms", "fitness", "fitness center", "fitness centers", "fitness studio", "fitness studios", "personal trainer", "personal trainers"], False),
     ("solar companies", ["solar", "solar installer", "solar installers"], True),
@@ -60,11 +64,26 @@ _HOME = _pattern(HOME_WORDS)
 _SMALL = _pattern(SMALL_WORDS)
 
 
+CLIENT_CUE = re.compile(
+    r"\b(for|serving|serve|serves|work with|working with|works with|exclusively with|partner with|clients? (?:are|include)|"
+    r"speciali[sz]e[sd]? in|speciali[sz]ing in|focus(?:ed|es)? on|built for|designed for|help|helps|helping)\b",
+    re.I,
+)
+
+
+def _as_clients(text, start):
+    """True when a client cue stands in the 60 characters before the industry word."""
+    return bool(CLIENT_CUE.search(text[max(0, start - 60):start]))
+
+
 def industries_in(text):
-    """Industries named in the text, in order of first mention. The longest name wins, so
+    """Industries named as the agency's clients, in order of first mention. The longest name wins, so
     "dental clinic" is dental practices, not clinics too."""
+    text = text or ""
     found = []
-    for m in _ANY.finditer(text or ""):
+    for m in _ANY.finditer(text):
+        if not _as_clients(text, m.start()):
+            continue
         i = _OWNER[m.group(1).lower()]
         if i not in found:
             found.append(i)
@@ -79,10 +98,9 @@ def detect(text):
         return " and ".join(INDUSTRIES[i][0] for i in found)
     if found and all(INDUSTRIES[i][2] for i in found):
         return HOME_SERVICES
-    if _HOME.search(text or ""):
+    home = _HOME.search(text or "")
+    if home and _as_clients(text, home.start()):
         return HOME_SERVICES
-    if not found and _SMALL.search(text or ""):
-        return SMALL_BUSINESS
     return ""
 
 
