@@ -193,3 +193,8 @@ Darjan and Claude rewrote the first emails. The angle now decides the email in t
 - Moved to none: Exalto (no author on the page, reads as SEO copy), Big Red Jelly (the "50Pros 2026 Top 10 Agency" is a badge among many Clutch badges, not an award), and the five "small businesses" industry lines (Mvestor, dandelion, Black Door, Daor, and Branch, whose "small business focus" describes the agency itself, not its clients). "Small businesses" is too broad for E to mean anything.
 - Awards checked: Chariot (Webby People's Voice 2026, on the Webby site) and Red Spot (#1 Dallas web design company on Clutch, 2026, on their awards page) stay.
 - Result, 130 ready leads: 105 none, 11 owner, 5 hobby, 4 valley, 3 industry, 2 award. File `openings/review_2026-10-07.json`.
+
+## 2026-10-08, four more owner lines to none; Ready only where a line is sent
+- Darjan did not like Just By Design (code, while Darjan does design only), Lake Design (a side note from a portfolio write-up), Southern Digital (SEO, and published August 2025) and Bonfire (long, about her clients' marketing). All four moved to none. Owner is now 7: Thrive, Idaho Websites, Perspektiiv, Launch Kit, YEG Digital, 1Brand, Marvel Marketing.
+- In the outreach app only a line that goes into the email waits for Darjan's Ready: hiring (D), owner (A1), award (B1, B2) and industry (E). A hobby line (A2) counts as approved when Darjan saves it. Leads that get C1, C2 or F show no line and go out without a Ready.
+- kcwebdesigner.com is skipped (listed owner died in 2025), and Darjan's two quincylou.com test rows were removed from the sheet and the app.
