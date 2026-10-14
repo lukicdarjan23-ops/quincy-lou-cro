@@ -64,7 +64,11 @@ def build_row(d):
         if email.split("@")[-1] != domain and not d.get("published_by_agency"):
             raise ValueError(f"{domain}: {email} is off-domain and not published by the agency")
 
-    if email and email_type == "personal":
+    verified_addr = (d.get("icypeas_verified") or "").strip().lower()
+    if verified_addr and verified_addr.split("@")[-1] == domain:
+        # Already confirmed by Icypeas (ultra_sure or sure) in the research session, so no second credit is spent.
+        row.update(email=verified_addr, email_source="icypeas_verified", email_confidence="high")
+    elif email and email_type == "personal":
         row["email"] = email
         row["email_source"] = d["email_source_url"]
         on_site = domain in d["email_source_url"]
@@ -73,7 +77,7 @@ def build_row(d):
         # Steps 1 and 2 found no personal address, so step 3: pattern guesses.
         cands = guesses(name, domain) if name else []
         verified = None
-        if cands and icypeas.is_available():
+        if cands and icypeas.is_available() and not d.get("guesses_tried"):
             for c in cands:
                 try:
                     if icypeas.verify(c):
