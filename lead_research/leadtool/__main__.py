@@ -99,6 +99,10 @@ def build_row(d):
     row["angle"] = (d.get("angle") or "").strip().lower() if opening else ""
     store.apply_valley(row)
     row["status"] = store.lead_status(row)
+    # No owner's own address (only info@, team@ and the like, or nothing confirmed): the agency is skipped,
+    # so it never reaches the sheet and is never researched again (Darjan, 14 Oct 2026).
+    if not store.owner_email(row):
+        row["status"] = "skip: no owner email"
     return row
 
 

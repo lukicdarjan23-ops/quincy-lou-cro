@@ -209,3 +209,8 @@ Darjan wants to click Ready only for owner lines. Hiring, award and industry lin
 
 ## 2026-10-14, agency size 2 to 20
 - Darjan widened the size range for new research from 5 to 20 people to **2 to 20 people** (rule 7 above). A two-person studio qualifies; a solo freelancer or an "I" site still does not. Agencies already skipped for being too small under the old range are not reopened automatically.
+
+## 2026-10-14, no owner email, no lead
+- Darjan does not want time spent on agencies without the owner's own address. From now on such an agency is not written to the sheet at all, not even to the "missing owner email" tab. `python -m leadtool add` gives it the status `skip: no owner email`, so it stays in leads.csv only to stop it being researched again. The 69 rows already in the "missing owner email" tab stay as they are.
+- Only the owner's own address counts: on the agency's own site, or confirmed by Icypeas (ultra_sure or sure). info@, hello@, team@, contact@, studio@, an employee's address or any other shared inbox does not.
+- **Order of work, to waste as little time as possible:** first check the agency qualifies (sells websites, 2 to 20 people, not a competitor), then find the owner's name, then the owner's address (own site, then Icypeas guesses). Only when the address is confirmed look for the angle and opening line. If the address cannot be confirmed after the site and the Icypeas guesses, record the agency and move on to the next one at once.
