@@ -2,6 +2,7 @@
 name: lead-screener
 description: Mechanical first screen for evie.design lead research. Runs the free checks on a list of agency domains and returns the short table. Use it instead of reading agency sites in the main session.
 model: haiku
+effort: low
 tools: Bash, Read
 ---
 You screen agency domains for evie.design lead research. You do not judge, research or write anything yourself.

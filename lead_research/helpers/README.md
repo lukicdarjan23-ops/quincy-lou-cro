@@ -28,3 +28,8 @@ Small scripts used to speed up the lead research. They write scratch output to `
 - `triage.py` also opens privacy, terms, legal and accessibility pages, blog author pages, and reads schema.org `"email"` from the page code, because owners sometimes put their own address there.
 - When the site shows other staff addresses, `pipeline.py` reads the domain's pattern (first@, flast@, first.last@) and writes it as a third field in `guess_queue.txt`; `guess_names.py` then tries that single address (1 credit instead of 2).
 - Owner names need evidence before they are queued for guessing: found on an about or team page, or next to "our founder", "I'm", "founded", "Meet <name>", or with the surname in the domain. Testimonial lines ("Mark Rogers, President Electra Sales") are rejected. Checked on 12 agencies from this session: 11 correct owners, 2 testimonial sites correctly empty.
+
+## Models and effort (set once, 14 Oct 2026)
+- `.claude/settings.json`: `model` claude-sonnet-5-5, `effortLevel` medium. Applies to every new session in this repository (the CRO app work too). `/model` or `/effort` in a session still override it for that session.
+- `.claude/agents/lead-screener.md`: haiku, effort low. Only runs `pipeline.py`.
+- `.claude/agents/owner-line-writer.md`: Opus, effort high. Reads one source and returns an owner line or NO LINE. Tested on Glantz ("brand your business to sell for more", 21 May 2026): the first prompt accepted it, the tightened prompt correctly returned NO LINE because the post is advice to readers, not how Glantz works. One call used about 58 thousand subagent tokens, so call it only for leads that already have a confirmed owner address and a promising source.

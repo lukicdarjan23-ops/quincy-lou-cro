@@ -38,7 +38,7 @@ House style: no em dashes, no colons, no relative time ("last week"). Every fact
 - Discovery without web search: `helpers/wpe.py`, `helpers/kin.py` (WP Engine and Kinsta partner directories). Web search with `blocked_domains` set to directories and listicles returns agencies' own sites. About 200 web searches per session.
 - Screening: `python helpers/pipeline.py LIST.txt`, or the `lead-screener` subagent (haiku), which runs it and returns the table. Dropped domains go to `screened.csv` and are skipped next time.
 - Guessing: `python helpers/guess_names.py /tmp/leadwork/guess_queue.txt`. Tries `first@` and `flast@` only, or the single address the domain's pattern points to, skips domains without MX, stops at the first `insufficient_credits`.
-- Model: Sonnet for research and saving, the haiku screener for screening, Opus only if an owner line needs careful writing.
+- Model and effort are set in `.claude/settings.json` (Sonnet 5.5, effort medium) and need no change. Screening goes to the `lead-screener` agent (haiku, effort low). Owner lines go to the `owner-line-writer` agent (Opus, effort high): give it agency, domain, owner and the source URL; it returns one openings record or NO LINE, and the main session saves it. Raise effort for one session with `/effort` only if a session keeps making judgment mistakes.
 - Pending owner names waiting for credits: `pending_guesses.txt`; older leads to pick up: `candidates_backlog.csv`.
 
 ## Known exceptions

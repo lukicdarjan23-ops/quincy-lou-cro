@@ -238,3 +238,9 @@ Darjan wants to click Ready only for owner lines. Hiring, award and industry lin
 - **One guess when the pattern is known.** Staff addresses on the site give the domain's pattern; then only that address is tried.
 - **Owner names from the script are stricter** (testimonials rejected, see helpers/README.md), so no credit goes to a client's name.
 - **Model.** Sonnet for research, the haiku `lead-screener` for screening, Opus only for owner lines that need careful writing. The session model is switched with `/model`; a project default was not set because the same repository also holds the CRO audit app.
+
+## 2026-10-14, models and effort fixed in the repository
+- Darjan asked for model and effort to be set once. `.claude/settings.json` (committed) sets Sonnet 5.5 at effort medium for new sessions in this repository; this also covers the CRO app work in the same repo. Medium follows Anthropic's guidance for Sonnet 5.5 on multistep tool use; the research is mostly running scripts and reading short outputs.
+- `lead-screener`: haiku, effort low (it only runs `helpers/pipeline.py`).
+- New `owner-line-writer`: Opus, effort high, the only place where writing quality decides whether a lead gets a line. It never saves anything; the main session saves its record with `leadtool openings`. Its rules include Darjan's 8 Oct rejection of lines about a client's marketing (Bonfire), after a test on Glantz showed the looser wording let such a line through.
+- The new agent is picked up from the next session on (agent files are read at session start).
