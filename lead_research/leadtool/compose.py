@@ -13,12 +13,14 @@ def ascii_slug(s):
     return re.sub(r"[^a-z]", "", s.lower())
 
 
-def guesses(full_name, domain, limit=5):
+def guesses(full_name, domain, limit=2):
     parts = [ascii_slug(p) for p in full_name.split() if ascii_slug(p)]
     if len(parts) < 2:
         return [f"{parts[0]}@{domain}"] if parts else []
     first, last = parts[0], parts[-1]
-    formats = [f"{first}", f"{first}.{last}", f"{first}{last}", f"{first[0]}{last}", f"{first[0]}.{last}"]
+    # 14 Oct 2026 sample of 24 confirmed addresses: 19 were first@, 5 were flast@, none first.last@ or firstlast@.
+    # So only these two are tried by default (2 credits for a miss instead of 5).
+    formats = [f"{first}", f"{first[0]}{last}", f"{first}.{last}", f"{first}{last}", f"{first[0]}.{last}"]
     return [f"{f}@{domain}" for f in formats[:limit]]
 
 
