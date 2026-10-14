@@ -24,6 +24,22 @@ def guesses(full_name, domain, limit=2):
     return [f"{f}@{domain}" for f in formats[:limit]]
 
 
+PATTERNS = ("first", "flast", "first.last", "firstlast", "f.last")
+
+
+def guess_for_pattern(full_name, domain, pattern):
+    """The single address for a known domain pattern (read off other addresses on the site): 1 credit, not 2."""
+    parts = [ascii_slug(p) for p in full_name.split() if ascii_slug(p)]
+    if not parts:
+        return []
+    first, last = parts[0], parts[-1]
+    if pattern != "first" and len(parts) < 2:
+        return []
+    local = {"first": first, "flast": first[:1] + last, "first.last": f"{first}.{last}",
+             "firstlast": first + last, "f.last": f"{first[:1]}.{last}"}.get(pattern)
+    return [f"{local}@{domain}"] if local else []
+
+
 def clean_opening(text):
     """House style for the personal line: no em dashes, no colons."""
     text = (text or "").replace("\u2014", ",").replace("\u2013", "-").replace(":", ",")

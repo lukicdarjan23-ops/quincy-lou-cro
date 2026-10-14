@@ -18,3 +18,8 @@ Donald Moore|mooretechsolutions.com
 Phil Vaive|niftydesignstudio.ca
 Justin Vandenberg|dynamitedesigns.ca
 Lindsey Scott|hellopixel.co
+# Owner names below come from helpers/pipeline.py, not read by hand yet. Open the source page before spending a credit.
+Darren Chait|archcowebdesign.com
+John Barrows|jsmtmedia.com
+John Ortmann|victoriawebdesign.com
+Lynn Tidmore|igwebs.com

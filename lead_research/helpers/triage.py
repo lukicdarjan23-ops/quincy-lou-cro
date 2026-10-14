@@ -11,6 +11,7 @@ NAME=re.compile(r"\b([A-Z][a-z]+(?:\s[A-Z]\.)?\s[A-Z][a-zA-Z'\-]+)\b")
 HOB=re.compile(r"woodwork|basketball|soccer|cycling|cyclist|arsenal|miami heat|steelers|classic car|vintage car|old cars|muscle car|car restor|restor\w+ (a |my )?(\d{4}|classic|vintage)",re.I)
 AW=re.compile(r"(webby|awwwards|addy|davey|w3 award|css design award|telly|muse award|communicator award|hermes)[^.]{0,80}",re.I)
 IND=re.compile(r"(?:for|serving|specializ\w+ in|work with|clients include)\s[^.]{0,90}(dentist|dental|law firm|lawyer|attorney|contractor|construction|remodel|roofing|plumb|hvac|solar|real estate|landscap|restaurant|veterinar|clinic|medical|healthcare|insurance|accounting|fitness|pest|restoration|auto detail|farm)[^.]{0,60}",re.I)
+JSONLD_EMAIL=re.compile(r'"email"\s*:\s*"(?:mailto:)?([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})"')
 JOB=re.compile(r"(web designer|ui designer|ui/ux designer|graphic designer|visual designer|product designer|senior designer|junior designer|creative designer)[^.]{0,60}",re.I)
 def get(u,rp):
     if not rp.can_fetch(UA,u): return None
@@ -35,13 +36,30 @@ def triage(d):
         if p.hostname and p.hostname.removeprefix("www.")==host: links[h]=a.get_text(" ",strip=True)
     svc=[h for h in links if re.search(r"web-?(site)?-?(design|develop)|website",h,re.I)][:2]
     pages=[h for h in links if re.search(r"about|team|people|who-we|our-story|leadership|staff|founder|meet|contact|career|jobs|award|news|blog$",h,re.I)][:9]
+    # Owners often put their own address on pages nobody reads: privacy policy, terms, legal notice, blog author pages.
+    extra=[h for h in links if re.search(r"privacy|terms|legal|imprint|disclaimer|accessibility|/author/",h,re.I) and h not in pages][:4]
     texts={r.url:r.text}; emails={}
-    for e in _emails_from(soup,r.text): emails[e]=r.url
-    for p in pages:
+    def grab(html,url):
+        for e in _emails_from(BeautifulSoup(html,"html.parser"),html): emails.setdefault(e,url)
+        for e in JSONLD_EMAIL.findall(html): emails.setdefault(e.lower(),url)  # schema.org "email" in page code
+    grab(r.text,r.url)
+    for p in pages+extra:
         time.sleep(.3); rr=get(p,rp)
         if not rr: continue
         texts[rr.url]=rr.text
-        for e in _emails_from(BeautifulSoup(rr.text,"html.parser"),rr.text): emails.setdefault(e,rr.url)
+        grab(rr.text,rr.url)
+        if re.search(r"blog|news",p,re.I):  # follow up to two author pages from the blog index
+            for a in BeautifulSoup(rr.text,"html.parser").select('a[href*="/author/"]')[:2]:
+                au=urljoin(rr.url,a["href"]).split("#")[0]
+                if au not in texts and urlparse(au).hostname and urlparse(au).hostname.removeprefix("www.")==host:
+                    ra=get(au,rp)
+                    if ra: texts[ra.url]=ra.text; grab(ra.text,ra.url)
+    # Names printed next to each address, so the address pattern of the domain (first@, flast@) can be read off it.
+    near={}
+    for e,u in emails.items():
+        plain=re.sub(r"\s+"," ",re.sub(r"<[^>]+>"," ",texts.get(u,"")))
+        i=plain.lower().find(e)
+        if i>=0: near[e]=list(dict.fromkeys(NAME.findall(plain[max(0,i-250):i+80])))[:4]
     owners=[];hob=[];aw=[];ind=[];job=[]
     for u,t in texts.items():
         s=BeautifulSoup(t,"html.parser")
@@ -64,6 +82,7 @@ def triage(d):
     print(f"## {d} {'(KNOWN!)' if store_known else ''}| {title}")
     print(" svc:",svc[:2],"| pages:",len(texts))
     print(" personal emails:",{e:emails[e].replace(base,'/') for e in own})
+    print(" near names:",{e:near.get(e,[]) for e in own})
     print(" generic:",[e for e in emails if e.split("@")[0] in GEN][:3])
     for o in owners[:4]: print("  OWN",o)
     for k,v in (("HOB",hob),("AWARD",aw),("IND",ind),("JOB",job)):

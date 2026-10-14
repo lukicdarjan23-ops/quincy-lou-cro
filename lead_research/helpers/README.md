@@ -22,3 +22,9 @@ Small scripts used to speed up the lead research. They write scratch output to `
 4. Step 2 can be delegated to the `lead-screener` subagent (`.claude/agents/lead-screener.md`, model haiku), which only runs the script and returns the table. Tested on 5 domains, 9 seconds. The main session then decides and writes the batch.
 
 `mx.py` checks MX over DNS-over-HTTPS because plain DNS is blocked in the sandbox.
+
+## Further savings (added 14 Oct 2026, later)
+- `screened.csv` (in `lead_research/`) remembers every domain the pipeline dropped and why, so it is never read twice. It was seeded with the 421 domains screened on 14 Oct. `--recheck` ignores it; `python helpers/pipeline.py --mark domain.com "reason"` records a domain you rejected by hand.
+- `triage.py` also opens privacy, terms, legal and accessibility pages, blog author pages, and reads schema.org `"email"` from the page code, because owners sometimes put their own address there.
+- When the site shows other staff addresses, `pipeline.py` reads the domain's pattern (first@, flast@, first.last@) and writes it as a third field in `guess_queue.txt`; `guess_names.py` then tries that single address (1 credit instead of 2).
+- Owner names need evidence before they are queued for guessing: found on an about or team page, or next to "our founder", "I'm", "founded", "Meet <name>", or with the surname in the domain. Testimonial lines ("Mark Rogers, President Electra Sales") are rejected. Checked on 12 agencies from this session: 11 correct owners, 2 testimonial sites correctly empty.
