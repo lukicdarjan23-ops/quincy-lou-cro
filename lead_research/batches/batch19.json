@@ -1,0 +1,32 @@
+[
+ {
+  "agency_name": "Louisville Web Lab",
+  "website": "https://www.louisvilleweblab.com",
+  "country": "USA",
+  "city": "Louisville, KY",
+  "team_size_estimate": "small, founder-led family agency (about page)",
+  "why_fit": "Sells website design. https://www.louisvilleweblab.com/website-design-louisville-ky",
+  "contact_name": "Dustin Hobbs",
+  "contact_title": "Founder and CEO",
+  "contact_source_url": "https://www.louisvilleweblab.com/",
+  "research_note": "",
+  "email": "dustin@louisvilleweblab.com",
+  "email_source_url": "https://www.louisvilleweblab.com/",
+  "email_type": "personal"
+ },
+ {
+  "agency_name": "Matthews Design",
+  "website": "https://matthewsdesign.co",
+  "country": "USA",
+  "city": "Louisville, KY",
+  "team_size_estimate": "small in-house team (about page, count not shown)",
+  "why_fit": "Sells website design. https://matthewsdesign.co/ (website design and development company)",
+  "contact_name": "Evan Matthews",
+  "contact_title": "Founder",
+  "contact_source_url": "https://matthewsdesign.co/about",
+  "research_note": "",
+  "email": "evan@matthewsdesign.co",
+  "email_source_url": "https://matthewsdesign.co/",
+  "email_type": "personal"
+ }
+]
