@@ -1,0 +1,62 @@
+[
+ {
+  "agency_name": "All in Web Pro",
+  "website": "https://allinwebpro.com",
+  "country": "USA",
+  "city": "Las Vegas, NV",
+  "team_size_estimate": "small team (founder plus employees since 2012)",
+  "why_fit": "Sells website design. https://allinwebpro.com/services/web-design",
+  "contact_name": "Owen Carver",
+  "contact_title": "Founder and CEO",
+  "contact_source_url": "https://allinwebpro.com/about/our-team/",
+  "research_note": "",
+  "email": "owen@allinwebpro.com",
+  "email_source_url": "https://allinwebpro.com/about/our-team/",
+  "email_type": "personal"
+ },
+ {
+  "agency_name": "WBC Designs",
+  "website": "https://wbcdesigns.com",
+  "country": "Canada",
+  "city": "Dartmouth, NS",
+  "team_size_estimate": "small team (team page)",
+  "why_fit": "Sells website design. https://wbcdesigns.com/web-design-graphic-design-services",
+  "contact_name": "Craig Steinberg",
+  "contact_title": "Owner / Lead Designer",
+  "contact_source_url": "https://wbcdesigns.com/our-team-of-marketing-experts/",
+  "research_note": "",
+  "email": "craig@wbcdesigns.com",
+  "email_source_url": "https://wbcdesigns.com/our-team-of-marketing-experts/",
+  "email_type": "personal"
+ },
+ {
+  "agency_name": "Shift Collaborative",
+  "website": "https://shiftcollaborative.com",
+  "country": "USA",
+  "city": "Pittsburgh, PA",
+  "team_size_estimate": "about 9 on about page",
+  "why_fit": "Sells website design. https://shiftcollaborative.com/shift-services/web-design-and-development",
+  "contact_name": "Sarah Mayer",
+  "contact_title": "Partner + Owner",
+  "contact_source_url": "https://shiftcollaborative.com/about-brand-agency/",
+  "research_note": "",
+  "email": "sarah@shiftcollaborative.com",
+  "email_source_url": "https://shiftcollaborative.com/about-brand-agency/",
+  "email_type": "personal"
+ },
+ {
+  "agency_name": "Posted Social",
+  "website": "https://posted-social.com",
+  "country": "USA",
+  "city": "St. Louis, MO",
+  "team_size_estimate": "about 8 on team page",
+  "why_fit": "Sells website design. https://posted-social.com/services/web-design",
+  "contact_name": "Michael Woll",
+  "contact_title": "Co-Owner",
+  "contact_source_url": "https://posted-social.com/our-story/",
+  "research_note": "marketing agency that sells web design",
+  "email": "michael@posted-social.com",
+  "email_source_url": "https://posted-social.com/our-team/",
+  "email_type": "personal"
+ }
+]

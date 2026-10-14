@@ -1,0 +1,80 @@
+[
+ {
+  "agency_name": "TBH Creative",
+  "website": "https://www.tbhcreative.com",
+  "country": "USA",
+  "city": "Carmel, IN",
+  "team_size_estimate": "about 11 on team page",
+  "why_fit": "Sells website design. https://www.tbhcreative.com/website-design-development",
+  "contact_name": "Tatum Hindman",
+  "contact_title": "President & Founder",
+  "contact_source_url": "https://www.tbhcreative.com/team/",
+  "research_note": "healthcare marketing and web design agency, founded 2004; owner address confirmed by Icypeas (14 Oct 2026)",
+  "icypeas_verified": "tatum@tbhcreative.com"
+ },
+ {
+  "agency_name": "Unified Web Design",
+  "website": "https://www.unifiedwebdesign.com",
+  "country": "USA",
+  "city": "Milwaukee, WI",
+  "team_size_estimate": "small (about 13 headings on about page)",
+  "why_fit": "Sells website design. https://www.unifiedwebdesign.com/",
+  "contact_name": "Matt Levenhagen",
+  "contact_title": "Founder",
+  "contact_source_url": "https://www.unifiedwebdesign.com/about-unified-web-design",
+  "research_note": "owner address confirmed by Icypeas (14 Oct 2026)",
+  "icypeas_verified": "matt@unifiedwebdesign.com"
+ },
+ {
+  "agency_name": "Straight Line Web Solutions",
+  "website": "https://www.straightlinewebsolutions.com",
+  "country": "USA",
+  "city": "Kansas City, MO",
+  "team_size_estimate": "small team (about page)",
+  "why_fit": "Sells website design. https://www.straightlinewebsolutions.com/custom-website-design",
+  "contact_name": "Andrew McClellan",
+  "contact_title": "Owner",
+  "contact_source_url": "https://www.straightlinewebsolutions.com/about/",
+  "research_note": "owner address confirmed by Icypeas (14 Oct 2026)",
+  "icypeas_verified": "andrew@straightlinewebsolutions.com"
+ },
+ {
+  "agency_name": "Infinite Ideas Web Design",
+  "website": "https://infiniteideaswebdesign.com",
+  "country": "Canada",
+  "city": "Calgary, AB",
+  "team_size_estimate": "small",
+  "why_fit": "Sells website design. https://infiniteideaswebdesign.com/",
+  "contact_name": "Martin Pereira",
+  "contact_title": "Founder",
+  "contact_source_url": "https://infiniteideaswebdesign.com/",
+  "research_note": "Icypeas rejected the owner name guesses (14 Oct 2026)",
+  "guesses_tried": true
+ },
+ {
+  "agency_name": "Veteran Web Design",
+  "website": "https://veteranwebdesign.com",
+  "country": "USA",
+  "city": "Richmond, VA",
+  "team_size_estimate": "small",
+  "why_fit": "Sells website design. https://veteranwebdesign.com/",
+  "contact_name": "Donnie Keith",
+  "contact_title": "Owner",
+  "contact_source_url": "https://veteranwebdesign.com/",
+  "research_note": "Icypeas rejected the owner name guesses (14 Oct 2026)",
+  "guesses_tried": true
+ },
+ {
+  "agency_name": "Vegas Web Design",
+  "website": "https://vegaswebdesign.net",
+  "country": "USA",
+  "city": "Las Vegas, NV",
+  "team_size_estimate": "small",
+  "why_fit": "Sells website design. https://vegaswebdesign.net/about/",
+  "contact_name": "Justin Davis",
+  "contact_title": "Owner and operator",
+  "contact_source_url": "https://vegaswebdesign.net/about/",
+  "research_note": "Icypeas rejected the owner name guesses (14 Oct 2026)",
+  "guesses_tried": true
+ }
+]
