@@ -206,3 +206,6 @@ Darjan wants to click Ready only for owner lines. Hiring, award and industry lin
 - **industry** lines are only ever written by the tool, from `industry_text`. The industry must be named as the agency's clients, right after words such as "for", "serving", "we work with" or "specializing in". "Small businesses" no longer counts. This blocks Branch Marketing, whose "small business focus" was about the agency itself. Jack & Bean, Proof Marketing and YDOP pass.
 - The evidence (award text, job title and date, industry sentence) is kept in `research_note`, so a line can be traced later.
 - Owner lines still wait for Darjan's Ready. Hobby lines are his own and count as approved when he saves them.
+
+## 2026-10-14, agency size 2 to 20
+- Darjan widened the size range for new research from 5 to 20 people to **2 to 20 people** (rule 7 above). A two-person studio qualifies; a solo freelancer or an "I" site still does not. Agencies already skipped for being too small under the old range are not reopened automatically.
