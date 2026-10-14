@@ -3,14 +3,20 @@ sys.path.insert(0,'/home/user/quincy-lou-cro/lead_research')
 from concurrent.futures import ThreadPoolExecutor
 from leadtool import icypeas
 from leadtool.compose import guesses
+sys.path.insert(0,__import__('os').path.dirname(__import__('os').path.abspath(__file__)))
+from mx import has_mx
+STOP=[False]
 OUT='/tmp/leadwork/guess_results.jsonl'
 def run(line):
     name,domain=line.split("|")[:2]
     tried=[]
+    if STOP[0]: return dict(name=name,domain=domain,error='stopped, Icypeas unavailable',tried=tried)
+    if has_mx(domain) is False: return dict(name=name,domain=domain,email=None,tried=[],note='no MX, no credit spent')
     for c in guesses(name,domain):
         try: ok=icypeas.verify(c)
         except icypeas.IcypeasUnavailable as e:
             # An error is not a rejection: the guesses are not tried, so the agency must not be recorded as skipped.
+            STOP[0]=True
             return dict(name=name,domain=domain,error=str(e),tried=tried)
         tried.append(c)
         if ok: return dict(name=name,domain=domain,email=c,tried=tried)
